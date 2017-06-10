@@ -13,10 +13,10 @@ Please be patient for first load. It may take some time as agents are loaded one
 ![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
 
 
-## Quick Setup
+## Usage
 
 ### Browser
-Add this code to you to your page to enable Clippy2.
+For using in raw HTML/JS:
 
 ```html
 <!-- Add the stylesheet to the head -->
@@ -50,6 +50,10 @@ clippy.load('Merlin', (agent) => {
     agent.show();
 });
 ```
+
+**NOTE** `assets` dir is not shipped with npm package for lighter package size.
+However it should work fine as assets are served from CDN by default. See [CDN](#custom-cdn--agents) section below.
+
 ## Actions
 All the agent actions are queued and executed by order, so you could stack them.
 
@@ -82,14 +86,14 @@ agent.stop();
 
 ## Custom CDN / Agents
 By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path, 
-You can set `window.CLIPPY_CDN` or use 4rd argument of `load` function it can be absolute URL or relative to script.
+You can set `window.CLIPPY_CDN` or use fourth argument of `load` function it can be absolute URL or relative to script.
 (**path should end with slash /**)
 
 ```js
 // Using global config
 window.CLIPPY_CDN = './agents/'
 
-// Or using 4rth argument
+// Or using fourth argument
 clippy.load('Marline', function() {
    // ...
 }, undefined, './agents/')
