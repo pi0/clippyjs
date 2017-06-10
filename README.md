@@ -82,8 +82,14 @@ agent.stop();
 
 ## Custom CDN / Agents
 By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path, 
-Use 4rd argument of `load` function it can be absolute URL or relative to script. (**path should end with slash /**)
+You can set `window.CLIPPY_CDN` or use 4rd argument of `load` function it can be absolute URL or relative to script.
+(**path should end with slash /**)
+
 ```js
+// Using global config
+window.CLIPPY_CDN = './agents/'
+
+// Or using 4rth argument
 clippy.load('Marline', function() {
    // ...
 }, undefined, './agents/')
