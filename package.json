@@ -1,18 +1,18 @@
 {
   "name": "clippyjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Add Clippy or his friends to any website for instant nostalgia.",
-  "main": "dist/clippyjs.js",
-  "web": "dist/clippyjs.js",
-  "module": "dist/clippyjs.esm.js",
-  "jsnext:main": "dist/clippyjs.esm.js",
+  "main": "dist/clippy.js",
+  "web": "dist/clippy.js",
+  "module": "dist/clippy.esm.js",
+  "jsnext:main": "dist/clippy.esm.js",
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pi0/clippy.js.git"
+    "url": "git+https://github.com/pi0/clippyjs.git"
   },
   "license": "MIT",
   "bugs": {
