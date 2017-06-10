@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="../assets/clippy.css" media="all">
+    <style>
+        html {
+            background: url('http://wallpapercave.com/wp/7VNksl0.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://unpkg.com/jquery@3.2.1"></script>
+<script src="../dist/clippy.js"></script>
+<script>
+    clippy.load('Merlin', function (agent) {
+        // do anything with the loaded agent
+        agent.show();
+    }, undefined, '../assets/agents/');
+</script>
+
+</body>
+</html>
