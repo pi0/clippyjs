@@ -1,17 +1,19 @@
 # Clippy
-Add Clippy or his friends to any website for instant nostalgia.
+> Add Clippy or his friends to any website for instant nostalgia.
 This project is a fresh rewrite of [Clippy.JS](http://smore.com/clippy-js) in ES6.
-Read more about the main project on [its' homepage](http://smore.com/clippy-js).    
-
-![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
+([Read More](http://smore.com/clippy-js))    
 
 ## Demos
+
 Please be patient for first load. It may take some time as agents are loaded one by one.
 
 - [Simple JSFiddle](https://jsfiddle.net/pi0/rtw8p05k)
 - [Agents Zoo](https://pi0.github.io/clippyjs/demo/index.html) 
 
-## Usage
+![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
+
+
+## Quick Setup
 
 ### Browser
 Add this code to you to your page to enable Clippy2.
