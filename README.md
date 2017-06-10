@@ -20,11 +20,13 @@ Add this code to you to your page to enable Clippy2.
 
 ```html
 <!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css">
 
 <!-- Add these scripts to  the bottom of the page -->
 <script src="https://unpkg.com/jquery@3.2.1"></script>
+
 <script src="https://unpkg.com/clippyjs@latest"></script>
+
 <script type="text/javascript">
 clippy.load('Merlin', function(agent){
     // Do anything with the loaded agent
@@ -80,10 +82,10 @@ agent.stop();
 
 ## Custom CDN / Agents
 By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path, 
-Use 4rd argument of `load` function. (**path should end with slash /**)
+Use 4rd argument of `load` function it can be absolute URL or relative to script. (**path should end with slash /**)
 ```js
 clippy.load('Marline', function() {
-  
+   // ...
 }, undefined, './agents/')
 ```
 
