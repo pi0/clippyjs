@@ -44,7 +44,7 @@ function nextAgent () {
         }, 3000 + (Math.random() * 4000))
 
         setTimeout(nextAgent, 2000)
-    }, undefined, '../assets/agents/');
+    });
 }
 
 nextAgent()
