@@ -5,17 +5,39 @@ Read more about the main project on [its' homepage](http://smore.com/clippy-js).
 
 ![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
 
-## Demo
-[Click Here!](https://pi0.github.io/clippyjs/demo/index.html) 
-Please be patient for first load. It may take some time as agents are being loaded one by one.
+## Demos
+Please be patient for first load. It may take some time as agents are loaded one by one.
 
-## Usage (Webpack)
+- [Simple JSFiddle](https://jsfiddle.net/pi0/rtw8p05k)
+- [Agents Zoo](https://pi0.github.io/clippyjs/demo/index.html) 
+
+## Usage
+
+### Browser
+Add this code to you to your page to enable Clippy2.
+
+```html
+<!-- Add the stylesheet to the head -->
+<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css" media="all">
+
+<!-- Add these scripts to  the bottom of the page -->
+<script src="https://unpkg.com/jquery@3.2.1"></script>
+<script src="https://unpkg.com/clippyjs@latest"></script>
+<script type="text/javascript">
+clippy.load('Merlin', function(agent){
+    // Do anything with the loaded agent
+    agent.show();
+});
+</script>
+```
+
+### NPM / Webpack
 Install dependency
 ```bash
 yarn add clippyjs # or npm install clippyjs
 ```
 
-Import and Load
+Import and load
 ```js
 import clippy from 'clippyjs'
 
@@ -24,30 +46,6 @@ clippy.load('Merlin', (agent) => {
     agent.show();
 });
 ```
-
-## Usage (Web)
-Add this code to you to your page to enable Clippy2.
-
-```html
-<!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css" media="all">
-
-<!-- Add these scripts to  the bottom of the page -->
-<!-- jQuery -->
-<script src="https://unpkg.com/jquery@3.2.1"></script>
-
-<!-- Clippy.js -->
-<script src="https://unpkg.com/clippyjs@latest"></script>
-
-<!-- Init script -->
-<script type="text/javascript">
-    clippy.load('Merlin', function(agent){
-        // do anything with the loaded agent
-        agent.show();
-    });
-</script>
-```
-
 ## Actions
 All the agent actions are queued and executed by order, so you could stack them.
 
@@ -76,6 +74,15 @@ agent.stopCurrent();
 
 // stop all actions in the queue and go back to idle mode
 agent.stop();
+```
+
+## Custom CDN / Agents
+By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path, 
+Use 4rd argument of `load` function. (**path should end with slash /**)
+```js
+clippy.load('Marline', function() {
+  
+}, undefined, './agents/')
 ```
 
 # Licence
