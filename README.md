@@ -1,16 +1,18 @@
 # Clippy
-Add Clippy or his friends to any website for instant nostalgia.  
-This project is a fresh rewrite of [Clippy.JS](http://smore.com/clippy-js) in ES6.   
+Add Clippy or his friends to any website for instant nostalgia.
+This project is a fresh rewrite of [Clippy.JS](http://smore.com/clippy-js) in ES6.
 Read more about the main project on [its' homepage](http://smore.com/clippy-js).    
 
+![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
+
 ## Demo
-[Click Here](https://pi0.github.io/clippyjs/demo/index.html)! 
-Please be patient at first load. it may be a little slow as agents are being loaded one by one.
+[Click Here!](https://pi0.github.io/clippyjs/demo/index.html) 
+Please be patient for first load. It may take some time as agents are being loaded one by one.
 
 ## Usage (Webpack)
 Install dependency
 ```bash
-yarn add clippy-js # or npm install clippyjs
+yarn add clippyjs # or npm install clippyjs
 ```
 
 Import and Load
