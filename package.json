@@ -8,7 +8,8 @@
   "jsnext:main": "dist/clippy.esm.js",
   "scripts": {
     "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "watch": "rollup -c -w",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
