@@ -24,14 +24,14 @@ Add this code to you to your page to enable Clippy2.
 
 ```html
 <!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="clippy.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css" media="all">
 
 <!-- Add these scripts to  the bottom of the page -->
-<!-- jQuery 1.7+ -->
-<script src="jquery.1.7.min.js"></script>
+<!-- jQuery -->
+<script src="https://unpkg.com/jquery@3.2.1"></script>
 
 <!-- Clippy.js -->
-<script src="clippy.min.js"></script>
+<script src="https://unpkg.com/clippyjs@latest"></script>
 
 <!-- Init script -->
 <script type="text/javascript">
