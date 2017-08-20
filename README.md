@@ -11,6 +11,7 @@ Please be patient for first load. It may take some time as agents are loaded one
 - [Agents Zoo](https://pi0.github.io/clippyjs/demo/index.html) 
 
 ![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs?ref=badge_shield)
 
 
 ## Usage
@@ -101,6 +102,9 @@ clippy.load('Marline', function() {
 
 # Licence
 MIT
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs?ref=badge_large)
 
 ## Special Thanks
 - The [Clippy.JS](http://smore.com/clippy-js) project by [Smore](http://smore.com)
