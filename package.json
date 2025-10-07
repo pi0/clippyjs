@@ -2,6 +2,7 @@
   "name": "clippyjs",
   "version": "0.0.3",
   "description": "Add Clippy or his friends to any website for instant nostalgia.",
+  "type": "module",
   "main": "dist/clippy.js",
   "module": "dist/clippy.esm.js",
   "scripts": {
