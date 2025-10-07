@@ -1,44 +1,36 @@
-const fs = require('fs');
-const path = require('path');
-const buble = require('rollup-plugin-buble');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const uglify = require('rollup-plugin-uglify');
-// const { minify } = require('uglify-js-harmony');
-const { dependencies } = require('./package.json');
+import terser from '@rollup/plugin-terser';
 
-const name = 'clippy'
-const dist = path.resolve(__dirname, 'dist');
+const name = 'clippy';
 
-// Ensure dist directory exists
-if (!fs.existsSync(dist)) {
-    fs.mkdirSync(dist);
-}
-
-module.exports = {
-    entry: path.resolve(__dirname, 'lib/index.js'),
-    external: Object.keys(dependencies),
-    moduleName: name,
-    plugins: [
-        buble(),
-        resolve({ external: ['vue'] }),
-        commonjs(),
-        // uglify({}, minify)
-    ],
-    globals: {
-        jquery: '$'
+export default [
+  // UMD build
+  {
+    input: 'lib/index.js',
+    output: {
+      file: 'dist/clippy.js',
+      format: 'umd',
+      name: name,
+      sourcemap: true
+    }
+  },
+  // UMD build (minified)
+  {
+    input: 'lib/index.js',
+    output: {
+      file: 'dist/clippy.min.js',
+      format: 'umd',
+      name: name,
+      sourcemap: true
     },
-    targets: [
-        {
-            format: 'umd',
-            moduleName: name,
-            dest: path.resolve(dist, name + '.js'),
-            sourceMap: true
-        },
-        {
-            format: 'es',
-            dest: path.resolve(dist, name + '.esm.js'),
-            sourceMap: true
-        }
-    ]
-};
+    plugins: [terser()]
+  },
+  // ES Module build
+  {
+    input: 'lib/index.js',
+    output: {
+      file: 'dist/clippy.esm.js',
+      format: 'es',
+      sourcemap: true
+    }
+  }
+];
