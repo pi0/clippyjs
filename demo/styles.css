@@ -579,4 +579,8 @@ body {
     height: 28px;
     font-size: 13px;
   }
+
+  .tray-notification {
+    display: none;
+  }
 }
