@@ -273,6 +273,86 @@
         height: 14px;
       }
 
+      /* -- Notification balloon (Win98 tray style) -- */
+      .tray-notification {
+        position: absolute;
+        bottom: 34px;
+        right: 8px;
+        width: 260px;
+        background: #ffffe1;
+        border: 1px solid #000;
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+        font-size: 11px;
+        z-index: 10000;
+        animation: notif-fadein 0.3s ease;
+        cursor: default;
+      }
+
+      .tray-notification::before {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        right: 20px;
+        width: 10px;
+        height: 6px;
+        background: #ffffe1;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
+      }
+
+      .notif-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 8px 2px;
+        font-weight: bold;
+      }
+
+      .notif-body {
+        padding: 2px 8px 8px;
+        line-height: 1.5;
+      }
+
+      .notif-body a {
+        color: #0000ff;
+        text-decoration: underline;
+      }
+
+      .notif-body a:visited {
+        color: #800080;
+      }
+
+      .notif-body a:hover {
+        color: #ff0000;
+      }
+
+      .notif-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        font-size: 11px;
+        font-family: inherit;
+        cursor: default;
+        color: #000;
+        padding: 0 2px;
+      }
+
+      .notif-close:hover {
+        color: #ff0000;
+      }
+
+      @keyframes notif-fadein {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
       /* Mobile adjustments */
       @media (max-width: 480px) {
         .desktop-area {
@@ -441,6 +521,28 @@
           Start
         </button>
         <div class="taskbar-tray">
+          <!-- GitHub tray icon -->
+          <span id="gh-tray-icon" title="GitHub" style="cursor: default; display: flex; align-items: center;">
+            <svg width="14" height="14" viewBox="0 0 16 16" style="image-rendering: pixelated;">
+              <circle cx="8" cy="8" r="7" fill="#000" stroke="#808080" stroke-width="0.5"/>
+              <path d="M8 2.5C4.7 2.5 2 5.1 2 8.3c0 2.6 1.7 4.7 4 5.5.3.1.4-.1.4-.3v-1c-1.6.4-2-.8-2-.8-.3-.7-.7-.9-.7-.9-.5-.4 0-.4 0-.4.6 0 .9.6.9.6.5.9 1.4.6 1.7.5.1-.4.2-.6.4-.8-1.3-.1-2.7-.6-2.7-2.8 0-.6.2-1.1.6-1.5-.1-.1-.3-.7.1-1.5 0 0 .5-.2 1.5.6.5-.1.9-.2 1.4-.2s1 .1 1.4.2c1.1-.8 1.5-.6 1.5-.6.3.8.1 1.4.1 1.5.4.4.6.9.6 1.5 0 2.2-1.4 2.7-2.7 2.8.2.2.4.5.4 1.1v1.6c0 .2.1.4.4.3 2.3-.8 4-2.9 4-5.5C14 5.1 11.3 2.5 8 2.5z" fill="#fff"/>
+            </svg>
+          </span>
+          <!-- Notification balloon -->
+          <div class="tray-notification" id="gh-notification">
+            <div class="notif-header">
+              <svg width="12" height="12" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="7" fill="#0000aa"/>
+                <text x="8" y="12" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">i</text>
+              </svg>
+              ClippyJS on GitHub
+              <button class="notif-close" id="notif-close-btn">×</button>
+            </div>
+            <div class="notif-body">
+              View source code, report issues, and contribute on GitHub:<br/>
+              <a href="https://github.com/pi0/clippyjs" target="_blank">github.com/pi0/clippyjs</a>
+            </div>
+          </div>
           <span id="clock"></span>
         </div>
       </div>
@@ -523,6 +625,26 @@
 
         currentIntervals.push(setInterval(() => agent.animate(), 3000 + Math.random() * 4000));
       }
+
+      // GitHub tray notification
+      const ghNotification = document.getElementById("gh-notification");
+      const ghTrayIcon = document.getElementById("gh-tray-icon");
+      const notifCloseBtn = document.getElementById("notif-close-btn");
+
+      // Show after a short delay
+      ghNotification.style.display = "none";
+      setTimeout(() => {
+        ghNotification.style.display = "";
+      }, 2000);
+
+      notifCloseBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        ghNotification.style.display = "none";
+      });
+
+      ghTrayIcon.addEventListener("click", () => {
+        ghNotification.style.display = ghNotification.style.display === "none" ? "" : "none";
+      });
 
       // Taskbar clock
       function updateClock() {
