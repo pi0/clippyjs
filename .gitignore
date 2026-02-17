@@ -1,6 +1,7 @@
 node_modules
 coverage
 dist
+dist-pages
 .vscode
 .DS_Store
 .eslintcache
