@@ -87,6 +87,10 @@ agent.moveTo(100, 100);
 // Gesture at a given point (if a gesture animation is available)
 agent.gestureAt(200, 200);
 
+// Stream text into the speech balloon from an async iterable (e.g. LLM response)
+await agent.speakStream(asyncIterableOfChunks);
+await agent.speakStream(asyncIterableOfChunks, { tts: true });
+
 // Stop the current action in the queue
 agent.stopCurrent();
 

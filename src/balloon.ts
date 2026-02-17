@@ -25,7 +25,7 @@ export default class Balloon {
     this._hidden = true;
     this._setup();
     this.WORD_SPEAK_TIME = 200;
-    this.CLOSE_BALLOON_DELAY = 2000;
+    this.CLOSE_BALLOON_DELAY = 5000;
     this._BALLOON_MARGIN = 15;
   }
 
@@ -280,6 +280,44 @@ export default class Balloon {
     };
 
     this._addWord();
+  }
+
+  /**
+   * Start a streaming speech session — returns a controller to push text chunks
+   */
+  speakStream(complete: Function): { push: (chunk: string) => void; done: () => void } {
+    this._hidden = false;
+    this._active = true;
+    this._hold = true;
+    this._complete = complete;
+    this.show();
+
+    let c = this._content;
+    c.style.height = "auto";
+    c.style.width = "auto";
+    c.textContent = "";
+    this.reposition();
+
+    let text = "";
+
+    return {
+      push: (chunk: string) => {
+        text += chunk;
+        c.textContent = text;
+        c.style.height = "auto";
+        c.style.width = "auto";
+        let w = c.offsetWidth;
+        c.style.width = w + "px";
+        c.style.height = c.offsetHeight + "px";
+        this.reposition();
+      },
+      done: () => {
+        this._active = false;
+        this._hold = false;
+        complete();
+        this.hide();
+      },
+    };
   }
 
   /**

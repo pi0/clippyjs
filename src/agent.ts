@@ -239,7 +239,7 @@ export default class Agent {
    * Show the agent
    * @param {boolean} [fast] - If true, show immediately without animation
    */
-  show(fast) {
+  show(fast?) {
     this._hidden = false;
     if (fast) {
       this._el.style.display = "block";
@@ -274,6 +274,33 @@ export default class Agent {
       this._balloon.speak(complete, text, options?.hold);
       if (options?.tts) this._speakTTS(text);
     }, this);
+  }
+
+  /**
+   * Stream text into the speech balloon from an async iterable.
+   *
+   * @param {AsyncIterable<string>} source - Async iterable of text chunks
+   * @param {Object} [options] - Options
+   * @param {boolean} [options.tts] - If true, use TTS when stream is done
+   */
+  async speakStream(
+    source: AsyncIterable<string>,
+    options?: { tts?: boolean },
+  ): Promise<void> {
+    this.stop();
+
+    let text = "";
+    const stream = this._balloon.speakStream(() => {
+      this._onQueueEmpty();
+    });
+
+    for await (const chunk of source) {
+      text += chunk;
+      stream.push(chunk);
+    }
+
+    if (options?.tts && text) this._speakTTS(text);
+    stream.done();
   }
 
   /**
