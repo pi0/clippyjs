@@ -8,15 +8,15 @@ Add Clippy or his friends to any website for instant nostalgia!
 
 ### CDN (no build tools)
 
-You can use ClippyJS directly in the browser with a `<script type="module">` tag and [unpkg](https://unpkg.com):
+You can use ClippyJS directly in the browser using CDN:
 
 ```html
 <!doctype html>
 <html>
   <body>
     <script type="module">
-      import { initAgent } from "https://unpkg.com/clippyjs/dist/index.mjs";
-      import * as agents from "https://unpkg.com/clippyjs/dist/agents/index.mjs";
+      import { initAgent } from "https://cdn.jsdelivr.net/npm/clippyjs/dist/index.mjs";
+      import * as agents from "https://cdn.jsdelivr.net/npm/clippyjs/dist/agents/index.mjs";
       const agent = await initAgent(agents.Clippy);
       agent.show();
       agent.speak("Hello! I'm Clippy, your virtual assistant.");
