@@ -31,12 +31,12 @@ src/
 
 ### Key classes
 
-| Class      | File              | Role                                                                                       |
-| ---------- | ----------------- | ------------------------------------------------------------------------------------------ |
-| `Agent`    | `src/agent.ts`    | Main API surface — lifecycle, speech, movement, drag, queue |
-| `Animator` | `src/animator.ts` | Sprite rendering, frame stepping, exit branching, sound sync                               |
-| `Balloon`  | `src/balloon.ts`  | Speech balloon with typewriter animation, auto-positioning                                 |
-| `Queue`    | `src/queue.ts`    | Sequential action queue with idle callback                                                 |
+| Class      | File              | Role                                                         |
+| ---------- | ----------------- | ------------------------------------------------------------ |
+| `Agent`    | `src/agent.ts`    | Main API surface — lifecycle, speech, movement, drag, queue  |
+| `Animator` | `src/animator.ts` | Sprite rendering, frame stepping, exit branching, sound sync |
+| `Balloon`  | `src/balloon.ts`  | Speech balloon with typewriter animation, auto-positioning   |
+| `Queue`    | `src/queue.ts`    | Sequential action queue with idle callback                   |
 
 ### Agent data format
 
