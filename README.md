@@ -116,28 +116,10 @@ Each agent has a unique voice personality using the [Web Speech API](https://dev
 agent.speak("Hello! I'm Clippy, your virtual assistant.", { tts: true });
 ```
 
-| Agent  | Rate | Pitch | Personality                                |
-| ------ | ---- | ----- | ------------------------------------------ |
-| Clippy | 1.1  | 1.3   | Upbeat, slightly fast office assistant     |
-| Bonzi  | 0.9  | 0.6   | Deep, slow, mischievous gorilla            |
-| F1     | 1.3  | 1.0   | Fast-talking robot                         |
-| Genie  | 0.85 | 0.8   | Calm, deep-voiced magical genie            |
-| Genius | 0.8  | 0.5   | Slow, deep, thoughtful Einstein-like voice |
-| Links  | 1.0  | 1.5   | High-pitched, energetic cat                |
-| Merlin | 0.8  | 0.7   | Slow, wise old wizard                      |
-| Peedy  | 1.2  | 1.4   | Chirpy, fast-talking parrot                |
-| Rocky  | 0.9  | 0.5   | Deep, gruff, tough dog                     |
-| Rover  | 1.25 | 1.4   | Excited, eager, playful dog                |
-
-> [!NOTE]
-> TTS availability and voice selection depends on the browser and operating system. The agent will attempt to match its preferred voice from the available system voices.
-
 # License
 
 [MIT](./LICENCE)
 
-This project is a fresh rewrite of [Clippy.JS](http://smore.com/clippy-js).
+This project is a fresh rewrite of [Clippy.JS](https://github.com/clippyjs/clippy.js) using agent data extracted with [Double Agent](https://doubleagent.sourceforge.net/) by Cinnamon Software.
 
-- [Clippy.JS](http://smore.com/clippy-js) by [Smore](http://smore.com)
-- [Cinnamon Software](http://www.cinnamonsoftware.com/) for developing [Double Agent](http://doubleagent.sourceforge.net/), the program used to unpack Clippy and his friends
-- Microsoft, for creating Clippy :)
+Clippy and friends are original creations of [Microsoft](https://microsoft.com) as part of Microsoft Office. All character assets remain property of Microsoft.
