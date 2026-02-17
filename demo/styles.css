@@ -456,6 +456,69 @@ body {
   }
 }
 
+/* -- Chat UI -- */
+.chat-section {
+  display: flex;
+  align-items: center;
+}
+
+.chat-messages {
+  height: 120px;
+  overflow-y: auto;
+  background: #fff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: inset 1px 1px 0 #404040;
+  padding: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.chat-msg {
+  margin-bottom: 2px;
+}
+
+.chat-msg-user {
+  color: #000080;
+}
+
+.chat-msg-assistant {
+  color: #000;
+}
+
+.chat-input-group {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.win98-input {
+  flex: 1;
+  min-width: 0;
+  height: 21px;
+  background: #fff;
+  border-top: 1px solid #808080;
+  border-left: 1px solid #808080;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: inset 1px 1px 0 #404040;
+  font-family: inherit;
+  font-size: 11px;
+  color: #000;
+  padding: 0 4px;
+  outline: none;
+}
+
+/* Short viewport — shift window higher so agent has room */
+@media (max-height: 700px) {
+  .win98-window {
+    top: 15%;
+    transform: translateX(-50%);
+  }
+}
+
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .desktop-area {

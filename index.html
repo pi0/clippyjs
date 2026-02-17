@@ -115,6 +115,26 @@
             <input type="checkbox" id="tts-toggle" checked />
             <label for="tts-toggle">Enable text-to-speech</label>
           </div>
+          <div class="chat-section" style="margin-top: 10px">
+            <button class="agent-btn" id="chat-btn" disabled>Start Chat!</button>
+            <span id="chat-status" style="margin-left: 6px; color: #808080"></span>
+          </div>
+          <div id="chat-container" style="display: none; margin-top: 8px">
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-group">
+              <input
+                type="text"
+                class="win98-input"
+                id="chat-input"
+                placeholder="Type a message..."
+                autocomplete="off"
+              />
+              <button class="agent-btn" id="chat-send">Send</button>
+              <button class="agent-btn" id="chat-mic" style="display: none" title="Speech-to-text">
+                🎤
+              </button>
+            </div>
+          </div>
         </div>
         <div class="win98-statusbar">
           <span class="statusbar-section" id="status-text">Ready</span>

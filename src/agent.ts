@@ -283,10 +283,7 @@ export default class Agent {
    * @param {Object} [options] - Options
    * @param {boolean} [options.tts] - If true, use TTS when stream is done
    */
-  async speakStream(
-    source: AsyncIterable<string>,
-    options?: { tts?: boolean },
-  ): Promise<void> {
+  async speakStream(source: AsyncIterable<string>, options?: { tts?: boolean }): Promise<void> {
     this.stop();
 
     let text = "";

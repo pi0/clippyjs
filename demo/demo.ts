@@ -1,5 +1,6 @@
 import { initAgent } from "../src/index.ts";
 import * as agents from "../src/agents/index.ts";
+import * as llm from "./llm.ts";
 
 const availableAgents = Object.keys(agents);
 
@@ -18,9 +19,9 @@ let activeBtn = null;
 const statusText = document.getElementById("status-text");
 const agentCount = document.getElementById("agent-count");
 const btnContainer = document.getElementById("agent-buttons");
-const ttsToggle = document.getElementById("tts-toggle");
+const ttsToggle = document.getElementById("tts-toggle") as HTMLInputElement;
 const ttsLabel = document.querySelector('label[for="tts-toggle"]');
-const animSelect = document.getElementById("anim-select");
+const animSelect = document.getElementById("anim-select") as HTMLSelectElement;
 const ttsSupported = "speechSynthesis" in window;
 if (!ttsSupported) {
   ttsToggle.checked = false;
@@ -96,6 +97,8 @@ async function loadAgent(name, btn, { updateHash = true } = {}) {
     animSelect.appendChild(opt);
   }
   animSelect.disabled = false;
+  llm.enableStartBtn();
+  llm.setAgent(name);
 
   const speak = () => {
     agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)], {
@@ -114,6 +117,13 @@ animSelect.addEventListener("change", () => {
   if (!currentAgent || !animSelect.value) return;
   currentAgent.stop();
   currentAgent.play(animSelect.value);
+});
+
+// Wire LLM replies to the agent via streaming
+llm.onAgentReplyStream((stream) => {
+  if (!currentAgent) return;
+  currentAgent.speakStream(stream, { tts: ttsToggle.checked });
+  currentAgent.animate();
 });
 
 // GitHub tray notification

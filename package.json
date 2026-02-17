@@ -35,6 +35,7 @@
     "typecheck": "tsgo --noEmit --skipLibCheck"
   },
   "devDependencies": {
+    "@mlc-ai/web-llm": "^0.2.80",
     "@types/node": "latest",
     "@typescript/native-preview": "latest",
     "@vitest/coverage-v8": "latest",
