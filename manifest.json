@@ -1,0 +1,10 @@
+{
+  "name": "Clippy - Windows 98",
+  "short_name": "Clippy",
+  "description": "Nostalgic Windows 98-style animated assistant characters for the web",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#008080",
+  "theme_color": "#008080",
+  "icons": []
+}
