@@ -27,7 +27,7 @@ export default class Agent {
   _dragUpdateLoop: number;
   _dragging: boolean;
   _resizeHandle: () => void;
-  _mouseDownHandle: (e: MouseEvent) => void;
+  _pointerDownHandle: (e: MouseEvent | TouchEvent) => void;
   _dblClickHandle: () => void;
   _tts: { rate: number; pitch: number; voice: string } | undefined;
 
@@ -45,6 +45,7 @@ export default class Agent {
       zIndex: "10001",
       cursor: "pointer",
       display: "none",
+      touchAction: "none",
     });
 
     document.body.appendChild(this._el);
@@ -251,8 +252,8 @@ export default class Agent {
     const style = getComputedStyle(this._el);
 
     if (style.top === "auto" || style.left === "auto") {
-      let left = window.innerWidth < 600 ? window.innerWidth * 0.6 : window.innerWidth * 0.8;
-      let top = window.innerWidth < 600 ? window.innerHeight * 0.7 : window.innerHeight * 0.8;
+      let left = (window.innerWidth - this._el.offsetWidth) / 2;
+      let top = 40;
       let clamped = this._clampXY(left, top);
       this._el.style.top = clamped.y + "px";
       this._el.style.left = clamped.x + "px";
@@ -466,10 +467,11 @@ export default class Agent {
    */
   _setupEvents() {
     this._resizeHandle = this.reposition.bind(this);
-    this._mouseDownHandle = this._onMouseDown.bind(this);
+    this._pointerDownHandle = this._onPointerDown.bind(this);
     this._dblClickHandle = this._onDoubleClick.bind(this);
     window.addEventListener("resize", this._resizeHandle);
-    this._el.addEventListener("mousedown", this._mouseDownHandle);
+    this._el.addEventListener("mousedown", this._pointerDownHandle);
+    this._el.addEventListener("touchstart", this._pointerDownHandle, { passive: false });
     this._el.addEventListener("dblclick", this._dblClickHandle);
   }
 
@@ -521,21 +523,21 @@ export default class Agent {
   }
 
   /**
-   * Handle mouse down to start dragging
-   * @param {MouseEvent} e
+   * Handle pointer down (mouse or touch) to start dragging
+   * @param {MouseEvent | TouchEvent} e
    * @private
    */
-  _onMouseDown(e) {
+  _onPointerDown(e: MouseEvent | TouchEvent) {
     e.preventDefault();
     this._startDrag(e);
   }
 
   /**
    * Initialize drag operation
-   * @param {MouseEvent} e
+   * @param {MouseEvent | TouchEvent} e
    * @private
    */
-  _startDrag(e) {
+  _startDrag(e: MouseEvent | TouchEvent) {
     this.pause();
     this._balloon.hide(true);
     this._offset = this._calculateClickOffset(e);
@@ -547,23 +549,26 @@ export default class Agent {
     window.addEventListener("mousemove", this._moveHandle);
     // @ts-expect-error
     window.addEventListener("mouseup", this._upHandle);
+    // @ts-expect-error
+    window.addEventListener("touchmove", this._moveHandle, { passive: false });
+    // @ts-expect-error
+    window.addEventListener("touchend", this._upHandle);
 
     this._dragUpdateLoop = window.setTimeout(this._updateLocation.bind(this), 10);
   }
 
   /**
-   * Calculate offset between click position and agent position
-   * @param {MouseEvent} e
+   * Calculate offset between click/touch position and agent position
+   * @param {MouseEvent | TouchEvent} e
    * @returns {{top: number, left: number}}
    * @private
    */
-  _calculateClickOffset(e) {
-    let mouseX = e.pageX;
-    let mouseY = e.pageY;
+  _calculateClickOffset(e: MouseEvent | TouchEvent) {
+    let point = "touches" in e ? e.touches[0] : e;
     let o = this._el.getBoundingClientRect();
     return {
-      top: mouseY - (o.top + window.pageYOffset),
-      left: mouseX - (o.left + window.pageXOffset),
+      top: point.pageY - (o.top + window.pageYOffset),
+      left: point.pageX - (o.left + window.pageXOffset),
     };
   }
 
@@ -578,14 +583,14 @@ export default class Agent {
   }
 
   /**
-   * Handle mouse move during drag
-   * @param {MouseEvent} e
+   * Handle mouse/touch move during drag
    * @private
    */
-  _dragMove(e) {
+  _dragMove(e: MouseEvent | TouchEvent) {
     e.preventDefault();
-    let x = e.clientX - this._offset.left;
-    let y = e.clientY - this._offset.top;
+    let point = "touches" in e ? e.touches[0] : e;
+    let x = point.clientX - this._offset.left;
+    let y = point.clientY - this._offset.top;
     this._targetX = x;
     this._targetY = y;
     this._clampTarget();
@@ -601,6 +606,10 @@ export default class Agent {
     window.removeEventListener("mousemove", this._moveHandle);
     // @ts-expect-error
     window.removeEventListener("mouseup", this._upHandle);
+    // @ts-expect-error
+    window.removeEventListener("touchmove", this._moveHandle);
+    // @ts-expect-error
+    window.removeEventListener("touchend", this._upHandle);
 
     this._balloon.show();
     this.reposition();
@@ -684,6 +693,10 @@ export default class Agent {
     window.removeEventListener("mousemove", this._moveHandle);
     // @ts-expect-error
     window.removeEventListener("mouseup", this._upHandle);
+    // @ts-expect-error
+    window.removeEventListener("touchmove", this._moveHandle);
+    // @ts-expect-error
+    window.removeEventListener("touchend", this._upHandle);
     this._animator.dispose();
     this._balloon.dispose();
     this._queue.dispose();
