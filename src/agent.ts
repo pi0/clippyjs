@@ -41,7 +41,7 @@ export default class Agent {
     this._el = document.createElement("div");
     Object.assign(this._el.style, {
       position: "fixed",
-      zIndex: "1000",
+      zIndex: "10001",
       cursor: "pointer",
       display: "none",
     });

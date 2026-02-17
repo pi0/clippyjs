@@ -37,7 +37,7 @@ export default class Balloon {
     this._balloon = document.createElement("div");
     Object.assign(this._balloon.style, {
       position: "fixed",
-      zIndex: "1000",
+      zIndex: "10001",
       cursor: "pointer",
       background: "#ffc",
       color: "black",
