@@ -1,0 +1,16 @@
+name: checks
+on: { push: {}, pull_request: {} }
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: npm i -fg corepack && corepack enable
+      - uses: actions/setup-node@v6
+        with: { node-version: lts/*, cache: "pnpm" }
+      - run: pnpm install
+      - run: pnpm typecheck
+      - run: pnpm vitest --coverage
+      - run: pnpm run lint
+      # - uses: codecov/codecov-action@v5
+      #   with: { token: "${{ secrets.CODECOV_TOKEN }}" }

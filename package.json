@@ -1,27 +1,39 @@
 {
-  "name": "clippyjs",
+  "name": "packageName",
   "version": "0.0.3",
   "description": "Add Clippy or his friends to any website for instant nostalgia.",
-  "type": "module",
-  "main": "dist/clippy.js",
-  "module": "dist/clippy.esm.js",
-  "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w",
-    "prepublish": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pi0/clippyjs.git"
-  },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pi0/clippyjs/issues"
+  "repository": "pi0/clippyjs",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "types": "./dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs"
   },
-  "homepage": "https://github.com/pi0/clippyjs#readme",
-  "dependencies": {},
+  "scripts": {
+    "build": "obuild",
+    "dev": "vite dev",
+    "fmt": "automd && oxlint . --fix && oxfmt .",
+    "lint": "oxlint . && oxfmt --check .",
+    "prepack": "pnpm build",
+    "release": "pnpm test && pnpm build && changelogen --release && npm publish && git push --follow-tags",
+    "test": "pnpm lint && pnpm typecheck && vitest run --coverage",
+    "typecheck": "tsgo --noEmit --skipLibCheck"
+  },
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
-    "rollup": "^4.28.1"
-  }
+    "@types/node": "latest",
+    "@typescript/native-preview": "latest",
+    "@vitest/coverage-v8": "latest",
+    "automd": "latest",
+    "changelogen": "latest",
+    "obuild": "latest",
+    "oxfmt": "latest",
+    "oxlint": "latest",
+    "vite": "^7.3.1",
+    "vitest": "latest"
+  },
+  "packageManager": "pnpm@10.29.3"
 }
