@@ -5,6 +5,7 @@ export default class Balloon {
   _targetEl: HTMLElement;
   _balloon: HTMLDivElement;
   _content: HTMLDivElement;
+  _tip: HTMLDivElement;
   _hidden: boolean;
   _active: boolean;
   _hold: boolean;
@@ -34,16 +35,36 @@ export default class Balloon {
    */
   _setup() {
     this._balloon = document.createElement("div");
-    this._balloon.className = "clippy-balloon";
-    this._balloon.style.display = "none";
+    Object.assign(this._balloon.style, {
+      position: "fixed",
+      zIndex: "1000",
+      cursor: "pointer",
+      background: "#ffc",
+      color: "black",
+      padding: "8px",
+      border: "1px solid black",
+      borderRadius: "5px",
+      display: "none",
+    });
 
-    const tip = document.createElement("div");
-    tip.className = "clippy-tip";
+    this._tip = document.createElement("div");
+    Object.assign(this._tip.style, {
+      width: "10px",
+      height: "16px",
+      background:
+        "url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAgCAMAAAAlvKiEAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRF///MAAAA////52QwgAAAAAN0Uk5T//8A18oNQQAAAGxJREFUeNqs0kEOwCAIRFHn3//QTUU6xMyyxii+jQosrTPkyPEM6IN3FtzIRk1U4dFeKWQiH6pRRowMVKEmvronEynkwj0uZJgR22+YLopPSo9P34wJSamLSU7lSIWLJU7NkNomNlhqxUeAAQC+TQLZyEuJBwAAAABJRU5ErkJggg==) no-repeat",
+      position: "absolute",
+    });
 
     this._content = document.createElement("div");
-    this._content.className = "clippy-content";
+    Object.assign(this._content.style, {
+      maxWidth: "200px",
+      minWidth: "120px",
+      fontFamily: '"Microsoft Sans", sans-serif',
+      fontSize: "10pt",
+    });
 
-    this._balloon.appendChild(tip);
+    this._balloon.appendChild(this._tip);
     this._balloon.appendChild(this._content);
 
     document.body.appendChild(this._balloon);
@@ -75,13 +96,6 @@ export default class Balloon {
     let bH = this._balloon.offsetHeight;
     let bW = this._balloon.offsetWidth;
 
-    this._balloon.classList.remove(
-      "clippy-top-left",
-      "clippy-top-right",
-      "clippy-bottom-right",
-      "clippy-bottom-left",
-    );
-
     let left, top;
     switch (side) {
       case "top-left":
@@ -104,7 +118,52 @@ export default class Balloon {
 
     this._balloon.style.top = top + "px";
     this._balloon.style.left = left + "px";
-    this._balloon.classList.add("clippy-" + side);
+    this._positionTip(side);
+  }
+
+  /**
+   * Apply inline styles to the tip element based on balloon side
+   * @param {string} side - One of: top-left, top-right, bottom-left, bottom-right
+   * @private
+   */
+  _positionTip(side) {
+    const s = this._tip.style;
+    // Reset tip position
+    s.top = "";
+    s.left = "";
+    s.marginTop = "";
+    s.marginLeft = "";
+    s.backgroundPosition = "";
+
+    switch (side) {
+      case "top-left":
+        s.top = "100%";
+        s.marginTop = "0px";
+        s.left = "100%";
+        s.marginLeft = "-50px";
+        break;
+      case "top-right":
+        s.top = "100%";
+        s.marginTop = "0px";
+        s.left = "0";
+        s.marginLeft = "50px";
+        s.backgroundPosition = "-10px 0";
+        break;
+      case "bottom-right":
+        s.top = "0";
+        s.marginTop = "-16px";
+        s.left = "0";
+        s.marginLeft = "50px";
+        s.backgroundPosition = "-10px -16px";
+        break;
+      case "bottom-left":
+        s.top = "0";
+        s.marginTop = "-16px";
+        s.left = "100%";
+        s.marginLeft = "-50px";
+        s.backgroundPosition = "0px -16px";
+        break;
+    }
   }
 
   /**
@@ -251,5 +310,16 @@ export default class Balloon {
         this.CLOSE_BALLOON_DELAY,
       );
     }
+  }
+
+  dispose() {
+    window.clearTimeout(this._loop);
+    if (this._hiding) {
+      window.clearTimeout(this._hiding);
+      this._hiding = null;
+    }
+    this._active = false;
+    this._addWord = undefined;
+    this._balloon.remove();
   }
 }

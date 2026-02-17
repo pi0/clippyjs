@@ -4,7 +4,7 @@
 export default class Animator {
   _el: HTMLElement;
   _data: any;
-  _path: string;
+  _mapUrl: string;
   _currentFrameIndex: number;
   _currentFrame: any;
   _exiting: boolean;
@@ -19,14 +19,14 @@ export default class Animator {
 
   /**
    * @param {HTMLElement} el - The element to animate
-   * @param {string} path - Path to the agent's asset directory
+   * @param {string} mapUrl - URL to the agent's sprite sheet
    * @param {Object} data - Agent animation data (frames, overlays, sounds)
    * @param {Object} sounds - Map of sound names to audio URLs
    */
-  constructor(el, path, data, sounds) {
+  constructor(el, mapUrl, data, sounds) {
     this._el = el;
     this._data = data;
-    this._path = path;
+    this._mapUrl = mapUrl;
     this._currentFrameIndex = 0;
     this._currentFrame = undefined;
     this._exiting = false;
@@ -61,7 +61,7 @@ export default class Animator {
     el.style.display = "none";
     el.style.width = frameSize[0] + "px";
     el.style.height = frameSize[1] + "px";
-    el.style.background = "url('" + this._path + "/map.png') no-repeat";
+    el.style.background = "url('" + this._mapUrl + "') no-repeat";
 
     return el;
   }
@@ -258,6 +258,19 @@ export default class Animator {
    */
   resume() {
     this._step();
+  }
+
+  dispose() {
+    window.clearTimeout(this._loop);
+    this._currentAnimation = undefined;
+    this._currentFrame = undefined;
+    this._endCallback = undefined;
+    this._started = false;
+    for (const key in this._sounds) {
+      this._sounds[key].pause();
+      this._sounds[key].src = "";
+    }
+    this._sounds = {};
   }
 }
 

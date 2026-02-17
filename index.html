@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clippy.js — Windows 98</title>
-    <link rel="stylesheet" type="text/css" href="./assets/clippy.css" media="all" />
     <style>
       * {
         margin: 0;
@@ -12,7 +11,8 @@
         box-sizing: border-box;
       }
 
-      html, body {
+      html,
+      body {
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -84,12 +84,15 @@
         left: 50%;
         transform: translate(-50%, -50%);
         width: 420px;
+        max-width: calc(100vw - 16px);
         background: #c0c0c0;
         border-top: 2px solid #fff;
         border-left: 2px solid #fff;
         border-right: 2px solid #404040;
         border-bottom: 2px solid #404040;
-        box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #808080;
+        box-shadow:
+          inset 1px 1px 0 #dfdfdf,
+          inset -1px -1px 0 #808080;
       }
 
       .win98-titlebar {
@@ -172,6 +175,7 @@
         font-family: inherit;
         font-size: 11px;
         cursor: default;
+        min-height: 32px;
       }
 
       .agent-btn:active,
@@ -268,6 +272,55 @@
         width: 14px;
         height: 14px;
       }
+
+      /* Mobile adjustments */
+      @media (max-width: 480px) {
+        .desktop-area {
+          padding: 10px;
+          gap: 4px;
+        }
+
+        .win98-body {
+          padding: 10px;
+        }
+
+        .win98-body p {
+          font-size: 13px;
+        }
+
+        .win98-body h2 {
+          font-size: 15px;
+        }
+
+        .agent-btn {
+          font-size: 13px;
+          padding: 6px 12px;
+          min-height: 36px;
+        }
+
+        .agent-btn:active,
+        .agent-btn.active {
+          padding: 7px 11px 5px 13px;
+        }
+
+        .agent-select-group {
+          gap: 6px;
+        }
+
+        .win98-taskbar {
+          height: 36px;
+        }
+
+        .start-btn {
+          height: 28px;
+          font-size: 13px;
+        }
+
+        .taskbar-tray {
+          height: 28px;
+          font-size: 13px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -276,30 +329,67 @@
       <div class="desktop-area">
         <div class="desktop-icon" tabindex="0">
           <svg class="icon-img" viewBox="0 0 32 32">
-            <rect x="4" y="2" width="24" height="28" fill="#fff" stroke="#000" stroke-width="1"/>
-            <rect x="4" y="2" width="24" height="6" fill="#000080"/>
-            <text x="16" y="7" text-anchor="middle" fill="#fff" font-size="5" font-weight="bold">README</text>
-            <line x1="8" y1="13" x2="24" y2="13" stroke="#000" stroke-width="0.5"/>
-            <line x1="8" y1="16" x2="24" y2="16" stroke="#000" stroke-width="0.5"/>
-            <line x1="8" y1="19" x2="20" y2="19" stroke="#000" stroke-width="0.5"/>
-            <line x1="8" y1="22" x2="22" y2="22" stroke="#000" stroke-width="0.5"/>
+            <rect x="4" y="2" width="24" height="28" fill="#fff" stroke="#000" stroke-width="1" />
+            <rect x="4" y="2" width="24" height="6" fill="#000080" />
+            <text x="16" y="7" text-anchor="middle" fill="#fff" font-size="5" font-weight="bold">
+              README
+            </text>
+            <line x1="8" y1="13" x2="24" y2="13" stroke="#000" stroke-width="0.5" />
+            <line x1="8" y1="16" x2="24" y2="16" stroke="#000" stroke-width="0.5" />
+            <line x1="8" y1="19" x2="20" y2="19" stroke="#000" stroke-width="0.5" />
+            <line x1="8" y1="22" x2="22" y2="22" stroke="#000" stroke-width="0.5" />
           </svg>
           <span class="icon-label">README.txt</span>
         </div>
         <div class="desktop-icon" tabindex="0">
           <svg class="icon-img" viewBox="0 0 32 32">
-            <rect x="2" y="6" width="28" height="22" rx="1" fill="#c0c000" stroke="#808000" stroke-width="1"/>
-            <rect x="2" y="2" width="14" height="6" rx="1" fill="#c0c000" stroke="#808000" stroke-width="1"/>
-            <rect x="4" y="10" width="24" height="16" fill="#ffff80" stroke="#808000" stroke-width="0.5"/>
+            <rect
+              x="2"
+              y="6"
+              width="28"
+              height="22"
+              rx="1"
+              fill="#c0c000"
+              stroke="#808000"
+              stroke-width="1"
+            />
+            <rect
+              x="2"
+              y="2"
+              width="14"
+              height="6"
+              rx="1"
+              fill="#c0c000"
+              stroke="#808000"
+              stroke-width="1"
+            />
+            <rect
+              x="4"
+              y="10"
+              width="24"
+              height="16"
+              fill="#ffff80"
+              stroke="#808000"
+              stroke-width="0.5"
+            />
           </svg>
           <span class="icon-label">My Agents</span>
         </div>
         <div class="desktop-icon" tabindex="0">
           <svg class="icon-img" viewBox="0 0 32 32">
-            <rect x="2" y="4" width="28" height="24" rx="2" fill="#c0c0c0" stroke="#808080" stroke-width="1"/>
-            <rect x="4" y="6" width="24" height="16" fill="#008080"/>
-            <circle cx="16" cy="14" r="5" fill="#fff" opacity="0.3"/>
-            <rect x="8" y="24" width="16" height="2" rx="1" fill="#808080"/>
+            <rect
+              x="2"
+              y="4"
+              width="28"
+              height="24"
+              rx="2"
+              fill="#c0c0c0"
+              stroke="#808080"
+              stroke-width="1"
+            />
+            <rect x="4" y="6" width="24" height="16" fill="#008080" />
+            <circle cx="16" cy="14" r="5" fill="#fff" opacity="0.3" />
+            <rect x="8" y="24" width="16" height="2" rx="1" fill="#808080" />
           </svg>
           <span class="icon-label">My Computer</span>
         </div>
@@ -309,7 +399,12 @@
       <div class="win98-window">
         <div class="win98-titlebar">
           <span class="titlebar-text">
-            <svg width="14" height="14" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#ffcc00" stroke="#806600" stroke-width="1"/><circle cx="6" cy="6" r="1.5" fill="#000"/><circle cx="10" cy="6" r="1.5" fill="#000"/><path d="M5 10 Q8 13 11 10" fill="none" stroke="#000" stroke-width="1"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="7" fill="#ffcc00" stroke="#806600" stroke-width="1" />
+              <circle cx="6" cy="6" r="1.5" fill="#000" />
+              <circle cx="10" cy="6" r="1.5" fill="#000" />
+              <path d="M5 10 Q8 13 11 10" fill="none" stroke="#000" stroke-width="1" />
+            </svg>
             Clippy.js — Agent Loader
           </span>
           <div class="titlebar-buttons">
@@ -320,12 +415,17 @@
         </div>
         <div class="win98-body">
           <h2>Welcome to Clippy.js!</h2>
-          <p>Click an agent below to summon your desktop assistant.<br>They will wander around and say hello.</p>
+          <p>
+            Click an agent below to summon your desktop assistant.<br />They will wander around and
+            say hello.
+          </p>
           <div class="agent-select-group" id="agent-buttons"></div>
         </div>
         <div class="win98-statusbar">
           <span class="statusbar-section" id="status-text">Ready</span>
-          <span class="statusbar-section" style="flex: 0; white-space: nowrap;" id="agent-count">0 agents</span>
+          <span class="statusbar-section" style="flex: 0; white-space: nowrap" id="agent-count"
+            >0 agents</span
+          >
         </div>
       </div>
 
@@ -333,10 +433,10 @@
       <div class="win98-taskbar">
         <button class="start-btn">
           <svg class="start-logo" viewBox="0 0 16 16">
-            <rect x="1" y="1" width="6" height="6" fill="#f00"/>
-            <rect x="9" y="1" width="6" height="6" fill="#0f0"/>
-            <rect x="1" y="9" width="6" height="6" fill="#00f"/>
-            <rect x="9" y="9" width="6" height="6" fill="#ff0"/>
+            <rect x="1" y="1" width="6" height="6" fill="#f00" />
+            <rect x="9" y="1" width="6" height="6" fill="#0f0" />
+            <rect x="1" y="9" width="6" height="6" fill="#00f" />
+            <rect x="9" y="9" width="6" height="6" fill="#ff0" />
           </svg>
           Start
         </button>
@@ -347,14 +447,10 @@
     </div>
 
     <script type="module">
-      import { clippy } from "./src/index.ts";
+      import { initAgent } from "./src/index.ts";
+      import * as agents from "./src/agents/index.ts";
 
-      window.CLIPPY_CDN = "/assets/agents/";
-
-      const availableAgents = [
-        "Bonzi", "Clippy", "F1", "Genie", "Genius",
-        "Links", "Merlin", "Peedy", "Rocky", "Rover",
-      ];
+      const availableAgents = Object.keys(agents);
 
       const talks = [
         "How can I help you?",
@@ -364,59 +460,77 @@
         "Helloo!",
       ];
 
-      const randPos = () => 0.2 + Math.random() * 0.6;
-      const loadedAgents = new Map();
+      let currentAgent = null;
+      let currentIntervals = [];
+      let activeBtn = null;
       const statusText = document.getElementById("status-text");
       const agentCount = document.getElementById("agent-count");
       const btnContainer = document.getElementById("agent-buttons");
 
       // Build agent buttons
+      const buttons = new Map();
       for (const name of availableAgents) {
         const btn = document.createElement("button");
         btn.className = "agent-btn";
         btn.textContent = name;
         btn.addEventListener("click", () => loadAgent(name, btn));
         btnContainer.appendChild(btn);
+        buttons.set(name, btn);
       }
 
-      function loadAgent(name, btn) {
-        if (loadedAgents.has(name)) return;
+      // Load a random agent on start
+      const randomName = availableAgents[~~(Math.random() * availableAgents.length)];
+      loadAgent(randomName, buttons.get(randomName));
+
+      async function loadAgent(name, btn) {
+        if (activeBtn === btn) return;
+
+        // Remove previous agent
+        if (currentAgent) {
+          currentAgent.dispose();
+          for (const id of currentIntervals) clearInterval(id);
+          currentIntervals = [];
+        }
+        if (activeBtn) {
+          activeBtn.classList.remove("active");
+          activeBtn.disabled = false;
+        }
+
         btn.classList.add("active");
         btn.disabled = true;
+        activeBtn = btn;
         statusText.textContent = "Loading " + name + "...";
 
-        clippy.load(name, (agent) => {
-          loadedAgents.set(name, agent);
-          agentCount.textContent = loadedAgents.size + " agent" + (loadedAgents.size === 1 ? "" : "s");
-          statusText.textContent = name + " loaded!";
+        const agent = await initAgent(agents[name]);
 
-          const move = () => {
-            agent.moveTo(
-              document.documentElement.clientWidth * randPos(),
-              document.documentElement.clientHeight * randPos(),
-            );
-          };
+        // If another agent was selected while loading, bail out
+        if (activeBtn !== btn) {
+          agent.dispose();
+          return;
+        }
+        currentAgent = agent;
+        agentCount.textContent = "1 agent";
+        statusText.textContent = name + " loaded!";
 
-          move();
-          agent.show();
+        agent.show();
 
-          const speak = () => {
-            agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)]);
-            agent.animate();
-          };
-          agent._el.addEventListener("click", () => speak());
-          speak();
+        const speak = () => {
+          agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)]);
+          agent.animate();
+        };
+        agent._el.addEventListener("click", () => speak());
+        speak();
 
-          setInterval(() => agent.animate(), 3000 + Math.random() * 4000);
-          setInterval(() => move(), 3000 + Math.random() * 4000);
-        });
+        currentIntervals.push(setInterval(() => agent.animate(), 3000 + Math.random() * 4000));
       }
 
       // Taskbar clock
       function updateClock() {
         const now = new Date();
-        document.getElementById("clock").textContent =
-          now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        document.getElementById("clock").textContent = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
       }
       updateClock();
       setInterval(updateClock, 30000);

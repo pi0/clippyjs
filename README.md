@@ -6,8 +6,8 @@
 
 <!-- automd:badges color=yellow -->
 
-[![npm version](https://img.shields.io/npm/v/packageName?color=yellow)](https://npmjs.com/package/packageName)
-[![npm downloads](https://img.shields.io/npm/dm/packageName?color=yellow)](https://npm.chart.dev/packageName)
+[![npm version](https://img.shields.io/npm/v/clippyjs?color=yellow)](https://npmjs.com/package/clippyjs)
+[![npm downloads](https://img.shields.io/npm/dm/clippyjs?color=yellow)](https://npm.chart.dev/clippyjs)
 
 <!-- /automd -->
 
@@ -23,98 +23,84 @@ Please be patient for first load. It may take some time as agents are loaded one
 
 ## Usage
 
-### Browser
-
-For using in raw HTML/JS:
-
-```html
-<!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="./assets/clippy.css" />
-<script src="./dist/clippy.js"></script>
-
-<script type="text/javascript">
-  clippy.load("Merlin", function (agent) {
-    // Do anything with the loaded agent
-    agent.show();
-  });
-</script>
-```
-
-### NPM / Webpack
-
-Install dependency
+Install:
 
 ```bash
-yarn add clippyjs # or npm install clippyjs
+nypx nypm i clippyjs
 ```
 
-Import and load
+Import and create an agent:
 
 ```js
-import clippy from "clippyjs";
+import { initAgent } from "clippyjs";
+import { Clippy } from "clippyjs/agents";
 
-clippy.load("Merlin", (agent) => {
-  // do anything with the loaded agent
-  agent.show();
-});
+// Load and show the agent
+const agent = await initAgent(Clippy);
+agent.show();
 ```
 
-**NOTE** `assets` dir is not shipped with npm package for lighter package size.
-However it should work fine as assets are served from CDN by default. See [CDN](#custom-cdn--agents) section below.
+### Available Agents
 
-## Actions
+You can import individual agents or all of them:
 
-All the agent actions are queued and executed by order, so you could stack them.
+```js
+// Import all agents
+import * as agents from "clippyjs/agents";
 
-```javascript
-// play a given animation
+// Or import individually
+import { Clippy } from "clippyjs/agents";
+// Also available: Bonzi, F1, Genie, Genius, Links, Merlin, Peedy, Rocky, Rover
+```
+
+Each agent can also be imported from its own subpath:
+
+```js
+import Merlin from "clippyjs/agents/merlin";
+```
+
+## API
+
+All agent actions are queued and executed in order, so you can stack them.
+
+```js
+// Play a given animation
 agent.play("Searching");
 
-// play a random animation
+// Play a random animation
 agent.animate();
 
-// get a list of all the animations
+// Get a list of all the animations
 agent.animations();
 // => ["MoveLeft", "Congratulate", "Hide", "Pleased", "Acknowledge", ...]
 
 // Show text balloon
 agent.speak("When all else fails, bind some paper together. My name is Clippy.");
 
-// move to the given point, use animation if available
+// Move to the given point, use animation if available
 agent.moveTo(100, 100);
 
-// gesture at a given point (if gesture animation is available)
+// Gesture at a given point (if gesture animation is available)
 agent.gestureAt(200, 200);
 
-// stop the current action in the queue
+// Stop the current action in the queue
 agent.stopCurrent();
 
-// stop all actions in the queue and go back to idle mode
+// Stop all actions in the queue and go back to idle mode
 agent.stop();
+
+// Hide the agent
+agent.hide();
+
+// Pause/resume animations
+agent.pause();
+agent.resume();
+
+// Clean up and remove the agent from the DOM
+agent.dispose();
 ```
 
-## Custom CDN / Agents
-
-By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path,
-You can set `window.CLIPPY_CDN` or use fourth argument of `load` function it can be absolute URL or relative to script.
-(**path should end with slash /**)
-
-```js
-// Using global config
-window.CLIPPY_CDN = "./agents/";
-
-// Or using fourth argument
-clippy.load(
-  "Marline",
-  function () {
-    // ...
-  },
-  undefined,
-  "./agents/",
-);
-```
-
-# LICENCE
+# License
 
 [MIT](./LICENCE)
 

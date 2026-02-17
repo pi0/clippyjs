@@ -2,11 +2,16 @@ import Queue from "./queue.ts";
 import Animator from "./animator.ts";
 import Balloon from "./balloon.ts";
 
+export interface AgentLoaders {
+  agent: () => Promise<{ default: any }>;
+  sound: () => Promise<{ default: any }>;
+  map: () => Promise<{ default: string }>;
+}
+
 /**
  * Agent class represents an animated character that can move, speak, and perform actions
  */
 export default class Agent {
-  path: string;
   _queue: Queue;
   _el: HTMLElement;
   _animator: Animator;
@@ -21,24 +26,29 @@ export default class Agent {
   _upHandle: Function;
   _dragUpdateLoop: number;
   _dragging: boolean;
+  _resizeHandle: () => void;
+  _mouseDownHandle: (e: MouseEvent) => void;
+  _dblClickHandle: () => void;
 
   /**
-   * @param {string} path - Path to the agent's asset directory
+   * @param {string} mapUrl - URL to the agent's sprite sheet
    * @param {Object} data - Agent animation data
    * @param {Object} sounds - Map of sound names to audio URLs
    */
-  constructor(path, data, sounds) {
-    this.path = path;
-
+  constructor(mapUrl: string, data: any, sounds: any) {
     this._queue = new Queue(this._onQueueEmpty.bind(this));
 
     this._el = document.createElement("div");
-    this._el.className = "clippy";
-    this._el.style.display = "none";
+    Object.assign(this._el.style, {
+      position: "fixed",
+      zIndex: "1000",
+      cursor: "pointer",
+      display: "none",
+    });
 
     document.body.appendChild(this._el);
 
-    this._animator = new Animator(this._el, path, data, sounds);
+    this._animator = new Animator(this._el, mapUrl, data, sounds);
     this._balloon = new Balloon(this._el);
 
     this._setupEvents();
@@ -95,16 +105,20 @@ export default class Agent {
     if (duration === undefined) duration = 1000;
 
     this._addToQueue(function (complete) {
+      let clamped = this._clampXY(x, y);
+      let cx = clamped.x;
+      let cy = clamped.y;
+
       if (duration === 0) {
-        this._el.style.top = y + "px";
-        this._el.style.left = x + "px";
+        this._el.style.top = cy + "px";
+        this._el.style.left = cx + "px";
         this.reposition();
         complete();
         return;
       }
 
       if (!this.hasAnimation(anim)) {
-        this._animate(this._el, { top: y, left: x }, duration, complete);
+        this._animate(this._el, { top: cy, left: cx }, duration, complete);
         return;
       }
 
@@ -113,7 +127,7 @@ export default class Agent {
           complete();
         }
         if (state === Animator.States.WAITING) {
-          this._animate(this._el, { top: y, left: x }, duration, () => {
+          this._animate(this._el, { top: cy, left: cx }, duration, () => {
             this._animator.exitAnimation();
           });
         }
@@ -236,9 +250,10 @@ export default class Agent {
 
     if (style.top === "auto" || style.left === "auto") {
       let left = window.innerWidth * 0.8;
-      let top = (window.innerHeight + window.pageYOffset) * 0.8;
-      this._el.style.top = top + "px";
-      this._el.style.left = left + "px";
+      let top = window.innerHeight * 0.8;
+      let clamped = this._clampXY(left, top);
+      this._el.style.top = clamped.y + "px";
+      this._el.style.left = clamped.x + "px";
     }
 
     this.resume();
@@ -418,9 +433,12 @@ export default class Agent {
    * @private
    */
   _setupEvents() {
-    window.addEventListener("resize", this.reposition.bind(this));
-    this._el.addEventListener("mousedown", this._onMouseDown.bind(this));
-    this._el.addEventListener("dblclick", this._onDoubleClick.bind(this));
+    this._resizeHandle = this.reposition.bind(this);
+    this._mouseDownHandle = this._onMouseDown.bind(this);
+    this._dblClickHandle = this._onDoubleClick.bind(this);
+    window.addEventListener("resize", this._resizeHandle);
+    this._el.addEventListener("mousedown", this._mouseDownHandle);
+    this._el.addEventListener("dblclick", this._dblClickHandle);
   }
 
   /**
@@ -538,6 +556,7 @@ export default class Agent {
     let y = e.clientY - this._offset.top;
     this._targetX = x;
     this._targetY = y;
+    this._clampTarget();
   }
 
   /**
@@ -557,6 +576,38 @@ export default class Agent {
   }
 
   /**
+   * Clamp x/y to keep the agent within viewport bounds
+   * @private
+   */
+  _clampTarget() {
+    let m = 5;
+    let bW = this._el.offsetWidth;
+    let bH = this._el.offsetHeight;
+    let wW = window.innerWidth;
+    let wH = window.innerHeight;
+
+    this._targetX = Math.max(m, Math.min(this._targetX, wW - bW - m));
+    this._targetY = Math.max(m, Math.min(this._targetY, wH - bH - m));
+  }
+
+  /**
+   * Clamp coordinates to keep the agent within viewport bounds
+   * @private
+   */
+  _clampXY(x: number, y: number): { x: number; y: number } {
+    let m = 5;
+    let bW = this._el.offsetWidth;
+    let bH = this._el.offsetHeight;
+    let wW = window.innerWidth;
+    let wH = window.innerHeight;
+
+    return {
+      x: Math.max(m, Math.min(x, wW - bW - m)),
+      y: Math.max(m, Math.min(y, wH - bH - m)),
+    };
+  }
+
+  /**
    * Add a function to the action queue
    * @param {Function} func - Function to queue
    * @param {Object} [scope] - Scope to bind function to
@@ -565,6 +616,20 @@ export default class Agent {
   _addToQueue(func, scope?: any) {
     if (scope) func = func.bind(scope);
     this._queue.queue(func);
+  }
+
+  dispose() {
+    this.stop();
+    window.removeEventListener("resize", this._resizeHandle);
+    window.clearTimeout(this._dragUpdateLoop);
+    // @ts-expect-error
+    window.removeEventListener("mousemove", this._moveHandle);
+    // @ts-expect-error
+    window.removeEventListener("mouseup", this._upHandle);
+    this._animator.dispose();
+    this._balloon.dispose();
+    this._queue.dispose();
+    this._el.remove();
   }
 
   /**
@@ -582,4 +647,21 @@ export default class Agent {
     this._animator.resume();
     this._balloon.resume();
   }
+}
+
+export async function initAgent(loaders: AgentLoaders): Promise<Agent> {
+  const [{ default: data }, { default: map }, sounds] = await Promise.all([
+    loaders.agent(),
+    loaders.map(),
+    _loadSounds(loaders),
+  ]);
+  return new Agent(map, data, sounds);
+}
+
+async function _loadSounds(loaders: AgentLoaders): Promise<Record<string, string>> {
+  const audio = document.createElement("audio");
+  const canPlayMp3 = !!audio.canPlayType && audio.canPlayType("audio/mp3") !== "";
+  if (!canPlayMp3) return {};
+  const m = await loaders.sound();
+  return m.default;
 }

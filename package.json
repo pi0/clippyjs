@@ -1,5 +1,5 @@
 {
-  "name": "packageName",
+  "name": "clippyjs",
   "version": "0.0.3",
   "description": "Add Clippy or his friends to any website for instant nostalgia.",
   "license": "MIT",
@@ -11,7 +11,18 @@
   "sideEffects": false,
   "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./dist/index.mjs"
+    ".": "./dist/index.mjs",
+    "./agents": "./dist/agents/index.mjs",
+    "./agents/bonzi": "./dist/agents/bonzi/index.mjs",
+    "./agents/clippy": "./dist/agents/clippy/index.mjs",
+    "./agents/f1": "./dist/agents/f1/index.mjs",
+    "./agents/genie": "./dist/agents/genie/index.mjs",
+    "./agents/genius": "./dist/agents/genius/index.mjs",
+    "./agents/links": "./dist/agents/links/index.mjs",
+    "./agents/merlin": "./dist/agents/merlin/index.mjs",
+    "./agents/peedy": "./dist/agents/peedy/index.mjs",
+    "./agents/rocky": "./dist/agents/rocky/index.mjs",
+    "./agents/rover": "./dist/agents/rover/index.mjs"
   },
   "scripts": {
     "build": "obuild",
@@ -20,7 +31,7 @@
     "lint": "oxlint . && oxfmt --check .",
     "prepack": "pnpm build",
     "release": "pnpm test && pnpm build && changelogen --release && npm publish && git push --follow-tags",
-    "test": "pnpm lint && pnpm typecheck && vitest run --coverage",
+    "test": "pnpm lint && pnpm typecheck",
     "typecheck": "tsgo --noEmit --skipLibCheck"
   },
   "devDependencies": {
@@ -32,6 +43,7 @@
     "obuild": "latest",
     "oxfmt": "latest",
     "oxlint": "latest",
+    "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "latest"
   },

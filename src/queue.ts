@@ -57,4 +57,10 @@ export default class Queue {
     this._active = false;
     this._progressQueue();
   }
+
+  dispose() {
+    this._queue = [];
+    this._active = false;
+    this._onEmptyCallback = () => {};
+  }
 }
