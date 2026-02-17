@@ -254,6 +254,53 @@
         color: #808080;
       }
 
+      /* -- Win98 Dropdown / Combobox -- */
+      .anim-select-group {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .anim-select-group label {
+        font-size: 11px;
+        white-space: nowrap;
+        margin-right: 2px;
+      }
+
+      .win98-select {
+        flex: 1;
+        min-width: 0;
+        height: 21px;
+        background: #fff;
+        border-top: 1px solid #808080;
+        border-left: 1px solid #808080;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        box-shadow: inset 1px 1px 0 #404040;
+        font-family: inherit;
+        font-size: 11px;
+        color: #000;
+        padding: 0 2px;
+        cursor: default;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23c0c0c0'/%3E%3Crect x='0' y='0' width='15' height='15' fill='%23fff' /%3E%3Crect x='1' y='1' width='14' height='14' fill='%23808080' /%3E%3Crect x='1' y='1' width='13' height='13' fill='%23c0c0c0' /%3E%3Cpolygon points='4,5 12,5 8,11' fill='%23000'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0 center;
+        background-size: 16px 16px;
+        padding-right: 18px;
+      }
+
+      .win98-select:focus {
+        outline: none;
+      }
+
+      .win98-select:disabled {
+        background-color: #c0c0c0;
+        color: #808080;
+      }
+
       /* -- Status bar -- */
       .win98-statusbar {
         border-top: 1px solid #808080;
@@ -454,6 +501,15 @@
           font-size: 13px;
         }
 
+        .anim-select-group label {
+          font-size: 13px;
+        }
+
+        .win98-select {
+          height: 28px;
+          font-size: 13px;
+        }
+
         .win98-taskbar {
           height: 36px;
         }
@@ -567,6 +623,12 @@
             say hello.
           </p>
           <div class="agent-select-group" id="agent-buttons"></div>
+          <div class="anim-select-group">
+            <label for="anim-select">Animation:</label>
+            <select class="win98-select" id="anim-select" disabled>
+              <option>—</option>
+            </select>
+          </div>
           <div class="win98-checkbox">
             <input type="checkbox" id="tts-toggle" checked />
             <label for="tts-toggle">Enable text-to-speech</label>
@@ -658,6 +720,7 @@
       const btnContainer = document.getElementById("agent-buttons");
       const ttsToggle = document.getElementById("tts-toggle");
       const ttsLabel = document.querySelector('label[for="tts-toggle"]');
+      const animSelect = document.getElementById("anim-select");
       const ttsSupported = "speechSynthesis" in window;
       if (!ttsSupported) {
         ttsToggle.checked = false;
@@ -723,6 +786,17 @@
 
         agent.show();
 
+        // Populate animation dropdown
+        animSelect.innerHTML = "";
+        const anims = agent.animations().sort();
+        for (const anim of anims) {
+          const opt = document.createElement("option");
+          opt.value = anim;
+          opt.textContent = anim;
+          animSelect.appendChild(opt);
+        }
+        animSelect.disabled = false;
+
         const speak = () => {
           agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)], {
             tts: ttsToggle.checked,
@@ -734,6 +808,13 @@
 
         currentIntervals.push(setInterval(() => agent.animate(), 3000 + Math.random() * 4000));
       }
+
+      // Play animation on selection change
+      animSelect.addEventListener("change", () => {
+        if (!currentAgent || !animSelect.value) return;
+        currentAgent.stop();
+        currentAgent.play(animSelect.value);
+      });
 
       // GitHub tray notification
       const ghNotification = document.getElementById("gh-notification");
