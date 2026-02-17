@@ -1,14 +1,14 @@
 # Clippy
 > Add Clippy or his friends to any website for instant nostalgia.
 This project is a fresh rewrite of [Clippy.JS](http://smore.com/clippy-js) in ES6.
-([Read More](http://smore.com/clippy-js))    
+([Read More](http://smore.com/clippy-js))
 
 ## Demos
 
 Please be patient for first load. It may take some time as agents are loaded one by one.
 
 - [Simple JSFiddle](https://jsfiddle.net/pi0/rtw8p05k)
-- [Agents Zoo](https://pi0.github.io/clippyjs/demo/index.html) 
+- [Agents Zoo](https://pi0.github.io/clippyjs/demo/index.html)
 
 ![image](https://user-images.githubusercontent.com/5158436/27002340-c221cc06-4df4-11e7-9438-050a3ad8ecde.png)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs?ref=badge_shield)
@@ -21,12 +21,8 @@ For using in raw HTML/JS:
 
 ```html
 <!-- Add the stylesheet to the head -->
-<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css">
-
-<!-- Add these scripts to  the bottom of the page -->
-<script src="https://unpkg.com/jquery@3.2.1"></script>
-
-<script src="https://unpkg.com/clippyjs@latest"></script>
+<link rel="stylesheet" type="text/css" href="./assets/clippy.css">
+<script src="./dist/clippy.js"></script>
 
 <script type="text/javascript">
 clippy.load('Merlin', function(agent){
@@ -86,7 +82,7 @@ agent.stop();
 ```
 
 ## Custom CDN / Agents
-By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path, 
+By default all agents are being served from GitHub CDN (this repo) in order to customize loading base path,
 You can set `window.CLIPPY_CDN` or use fourth argument of `load` function it can be absolute URL or relative to script.
 (**path should end with slash /**)
 
