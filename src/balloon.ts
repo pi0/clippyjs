@@ -45,6 +45,7 @@ export default class Balloon {
       border: "1px solid black",
       borderRadius: "5px",
       display: "none",
+      maxWidth: "230px",
     });
 
     this._tip = document.createElement("div");
@@ -62,6 +63,9 @@ export default class Balloon {
       minWidth: "120px",
       fontFamily: '"Microsoft Sans", sans-serif',
       fontSize: "10pt",
+      whiteSpace: "pre-wrap",
+      wordWrap: "break-word",
+      overflowWrap: "break-word",
     });
 
     this._balloon.appendChild(this._tip);
@@ -201,8 +205,10 @@ export default class Balloon {
     c.style.height = "auto";
     c.style.width = "auto";
     c.textContent = text;
+    // Lock width first (may be constrained by maxWidth), then height (depends on wrapped width)
+    let w = c.offsetWidth;
+    c.style.width = w + "px";
     c.style.height = c.offsetHeight + "px";
-    c.style.width = c.offsetWidth + "px";
     c.textContent = "";
     this.reposition();
 
@@ -252,7 +258,7 @@ export default class Balloon {
   _sayWords(text, hold, complete) {
     this._active = true;
     this._hold = hold;
-    let words = text.split(/[^\S-]/);
+    let words = text.split(/( +|\n)/);
     let time = this.WORD_SPEAK_TIME;
     let el = this._content;
     let idx = 1;
@@ -267,8 +273,8 @@ export default class Balloon {
           this.hide();
         }
       } else {
-        el.textContent = words.slice(0, idx).join(" ");
-        idx++;
+        el.textContent = words.slice(0, idx).join("");
+        idx += 2; // skip separator token
         this._loop = window.setTimeout(this._addWord, time);
       }
     };
