@@ -57,9 +57,7 @@ export function isReady() {
 }
 
 export function setAgent(name: string) {
-  const toolList = tools
-    .map((t) => `- ${t.name}: ${t.description}`)
-    .join("\n");
+  const toolList = tools.map((t) => `- ${t.name}: ${t.description}`).join("\n");
   chatHistory = [
     {
       role: "system",
@@ -115,9 +113,7 @@ chatBtn.addEventListener("click", async () => {
 
 let onReplyStream: ((stream: AsyncIterable<string>) => void) | null = null;
 
-export function onAgentReplyStream(
-  cb: (stream: AsyncIterable<string>) => void,
-) {
+export function onAgentReplyStream(cb: (stream: AsyncIterable<string>) => void) {
   onReplyStream = cb;
 }
 
@@ -187,8 +183,7 @@ chatInput.addEventListener("keydown", (e) => {
 
 // Speech-to-text (optional, Chrome/Edge)
 const SpeechRecognition =
-  (globalThis as any).SpeechRecognition ||
-  (globalThis as any).webkitSpeechRecognition;
+  (globalThis as any).SpeechRecognition || (globalThis as any).webkitSpeechRecognition;
 
 if (SpeechRecognition) {
   chatMic.style.display = "";
