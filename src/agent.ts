@@ -633,9 +633,23 @@ export default class Agent {
     utterance.rate = this._tts.rate;
     utterance.pitch = this._tts.pitch;
     const voices = speechSynthesis.getVoices();
-    const match = voices.find((v) => v.name.includes(this._tts!.voice));
-    if (match) utterance.voice = match;
-    speechSynthesis.speak(utterance);
+    if (voices.length > 0) {
+      const match = voices.find((v) => v.name.includes(this._tts!.voice));
+      if (match) utterance.voice = match;
+      speechSynthesis.speak(utterance);
+    } else {
+      // Voices not loaded yet (first page load) — wait for them
+      speechSynthesis.addEventListener(
+        "voiceschanged",
+        () => {
+          const v = speechSynthesis.getVoices();
+          const match = v.find((voice) => voice.name.includes(this._tts!.voice));
+          if (match) utterance.voice = match;
+          speechSynthesis.speak(utterance);
+        },
+        { once: true },
+      );
+    }
   }
 
   dispose() {
