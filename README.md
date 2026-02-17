@@ -2,6 +2,8 @@
 
 Add Clippy or his friends to any website for instant nostalgia!
 
+[**Online Demo**](https://clippy.pi0.io/)
+
 ## Usage
 
 ### CDN (no build tools)
