@@ -75,6 +75,12 @@ agent.animations();
 // Show a speech balloon
 agent.speak("When all else fails, bind some paper together. My name is Clippy.");
 
+// Speak with text-to-speech (uses Web Speech API)
+agent.speak("Hello! I'm here to help.", { tts: true });
+
+// Keep the balloon open until manually closed
+agent.speak("Read this carefully.", { hold: true });
+
 // Move to a given point, using animation if available
 agent.moveTo(100, 100);
 
@@ -97,6 +103,30 @@ agent.resume();
 // Remove the agent from the DOM
 agent.dispose();
 ```
+
+## Text-to-Speech
+
+Each agent has a unique voice personality using the [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API). Pass `{ tts: true }` to `speak()` to hear them talk:
+
+```js
+agent.speak("Hello! I'm Clippy, your virtual assistant.", { tts: true });
+```
+
+| Agent  | Rate | Pitch | Personality                                |
+| ------ | ---- | ----- | ------------------------------------------ |
+| Clippy | 1.1  | 1.3   | Upbeat, slightly fast office assistant     |
+| Bonzi  | 0.9  | 0.6   | Deep, slow, mischievous gorilla            |
+| F1     | 1.3  | 1.0   | Fast-talking robot                         |
+| Genie  | 0.85 | 0.8   | Calm, deep-voiced magical genie            |
+| Genius | 0.8  | 0.5   | Slow, deep, thoughtful Einstein-like voice |
+| Links  | 1.0  | 1.5   | High-pitched, energetic cat                |
+| Merlin | 0.8  | 0.7   | Slow, wise old wizard                      |
+| Peedy  | 1.2  | 1.4   | Chirpy, fast-talking parrot                |
+| Rocky  | 0.9  | 0.5   | Deep, gruff, tough dog                     |
+| Rover  | 1.25 | 1.4   | Excited, eager, playful dog                |
+
+> [!NOTE]
+> TTS availability and voice selection depends on the browser and operating system. The agent will attempt to match its preferred voice from the available system voices.
 
 # License
 

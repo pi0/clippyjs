@@ -62,6 +62,7 @@ Animation data structure (from `agent.ts`):
   overlayCount: number,
   framesize: [width, height],
   sounds: string[],
+  tts: { rate: number, pitch: number, voice: string },
   animations: {
     [name: string]: {
       frames: Array<{
@@ -76,6 +77,29 @@ Animation data structure (from `agent.ts`):
   }
 }
 ```
+
+### TTS (Text-to-Speech)
+
+Each agent has a `tts` config in its `agent.ts` that controls how it sounds when `agent.speak(text, { tts: true })` is called. Uses the Web Speech API (`SpeechSynthesisUtterance`).
+
+- **`rate`** — Speech rate multiplier (0.5–2.0). Lower = slower, more deliberate.
+- **`pitch`** — Voice pitch multiplier (0.5–2.0). Lower = deeper/more masculine.
+- **`voice`** — Voice name matched against available system voices via substring.
+
+TTS personality per agent:
+
+| Agent  | Rate | Pitch | Voice                  | Personality                                |
+| ------ | ---- | ----- | ---------------------- | ------------------------------------------ |
+| Clippy | 1.1  | 1.3   | Google US English      | Upbeat, slightly fast office assistant     |
+| Bonzi  | 0.9  | 0.6   | Google UK English Male | Deep, slow, mischievous gorilla            |
+| F1     | 1.3  | 1.0   | Google US English      | Fast-talking robot                         |
+| Genie  | 0.85 | 0.8   | Google UK English Male | Calm, deep-voiced magical genie            |
+| Genius | 0.8  | 0.5   | Google UK English Male | Slow, deep, thoughtful Einstein-like voice |
+| Links  | 1.0  | 1.5   | Google US English      | High-pitched, energetic cat                |
+| Merlin | 0.8  | 0.7   | Google UK English Male | Slow, wise old wizard                      |
+| Peedy  | 1.2  | 1.4   | Google US English      | Chirpy, fast-talking parrot                |
+| Rocky  | 0.9  | 0.5   | Google UK English Male | Deep, gruff, tough dog                     |
+| Rover  | 1.25 | 1.4   | Google US English      | Excited, eager, playful dog                |
 
 ### Package exports
 

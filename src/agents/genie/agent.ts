@@ -2,6 +2,7 @@ export default {
   overlayCount: 3,
   sounds: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"],
   framesize: [128, 128],
+  tts: { rate: 0.85, pitch: 0.8, voice: "Google UK English Male" },
   animations: {
     MoveLeft: {
       frames: [

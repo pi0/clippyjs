@@ -34,6 +34,7 @@ export default {
     "31",
   ],
   framesize: [124, 93],
+  tts: { rate: 1.3, pitch: 1.0, voice: "Google US English" },
   animations: {
     Congratulate: {
       frames: [

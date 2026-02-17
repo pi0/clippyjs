@@ -29,6 +29,7 @@ export default class Agent {
   _resizeHandle: () => void;
   _mouseDownHandle: (e: MouseEvent) => void;
   _dblClickHandle: () => void;
+  _tts: { rate: number; pitch: number; voice: string } | undefined;
 
   /**
    * @param {string} mapUrl - URL to the agent's sprite sheet
@@ -50,6 +51,7 @@ export default class Agent {
 
     this._animator = new Animator(this._el, mapUrl, data, sounds);
     this._balloon = new Balloon(this._el);
+    this._tts = data.tts;
 
     this._setupEvents();
   }
@@ -249,8 +251,8 @@ export default class Agent {
     const style = getComputedStyle(this._el);
 
     if (style.top === "auto" || style.left === "auto") {
-      let left = window.innerWidth * 0.8;
-      let top = window.innerHeight * 0.8;
+      let left = window.innerWidth < 600 ? window.innerWidth * 0.6 : window.innerWidth * 0.8;
+      let top = window.innerWidth < 600 ? window.innerHeight * 0.7 : window.innerHeight * 0.8;
       let clamped = this._clampXY(left, top);
       this._el.style.top = clamped.y + "px";
       this._el.style.left = clamped.x + "px";
@@ -263,11 +265,14 @@ export default class Agent {
   /**
    * Make the agent speak text in a speech balloon
    * @param {string} text - Text to display
-   * @param {boolean} [hold] - If true, keep balloon open until manually closed
+   * @param {Object} [options] - Options
+   * @param {boolean} [options.hold] - If true, keep balloon open until manually closed
+   * @param {boolean} [options.tts] - If true, use Web Speech API to speak aloud
    */
-  speak(text, hold) {
+  speak(text, options?: { hold?: boolean; tts?: boolean }) {
     this._addToQueue(function (complete) {
-      this._balloon.speak(complete, text, hold);
+      this._balloon.speak(complete, text, options?.hold);
+      if (options?.tts) this._speakTTS(text);
     }, this);
   }
 
@@ -306,6 +311,9 @@ export default class Agent {
     this._queue.clear();
     this._animator.exitAnimation();
     this._balloon.hide();
+    if (this._tts && "speechSynthesis" in window) {
+      speechSynthesis.cancel();
+    }
   }
 
   /**
@@ -616,6 +624,18 @@ export default class Agent {
   _addToQueue(func, scope?: any) {
     if (scope) func = func.bind(scope);
     this._queue.queue(func);
+  }
+
+  _speakTTS(text: string) {
+    if (!this._tts || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text.replaceAll("\n", " "));
+    utterance.rate = this._tts.rate;
+    utterance.pitch = this._tts.pitch;
+    const voices = speechSynthesis.getVoices();
+    const match = voices.find((v) => v.name.includes(this._tts!.voice));
+    if (match) utterance.voice = match;
+    speechSynthesis.speak(utterance);
   }
 
   dispose() {

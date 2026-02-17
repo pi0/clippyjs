@@ -2,6 +2,7 @@ export default {
   overlayCount: 1,
   sounds: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
   framesize: [124, 93],
+  tts: { rate: 1.1, pitch: 1.3, voice: "Google US English" },
   animations: {
     Congratulate: {
       frames: [

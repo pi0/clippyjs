@@ -26,6 +26,7 @@ export default {
     "23",
   ],
   framesize: [124, 93],
+  tts: { rate: 0.8, pitch: 0.5, voice: "Google UK English Male" },
   animations: {
     DeepIdle1: {
       frames: [

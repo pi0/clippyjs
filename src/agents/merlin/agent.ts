@@ -35,6 +35,7 @@ export default {
     "32",
   ],
   framesize: [128, 128],
+  tts: { rate: 0.8, pitch: 0.7, voice: "Google UK English Male" },
   animations: {
     MoveLeft: {
       frames: [

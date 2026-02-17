@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clippy.js — Windows 98</title>
+    <title>📎 Clippy - Windows 98</title>
     <style>
       * {
         margin: 0;
@@ -83,6 +83,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        cursor: default;
         width: 420px;
         max-width: calc(100vw - 16px);
         background: #c0c0c0;
@@ -174,6 +175,7 @@
         padding: 3px 10px;
         font-family: inherit;
         font-size: 11px;
+        color: #000;
         cursor: default;
         min-height: 32px;
       }
@@ -190,6 +192,66 @@
       .agent-btn:focus {
         outline: 1px dotted #000;
         outline-offset: -4px;
+      }
+
+      /* -- Win98 Checkbox toggle -- */
+      .win98-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        cursor: default;
+        user-select: none;
+      }
+
+      .win98-checkbox input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 13px;
+        height: 13px;
+        background: #fff;
+        border-top: 1px solid #808080;
+        border-left: 1px solid #808080;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        box-shadow: inset 1px 1px 0 #404040;
+        cursor: default;
+        position: relative;
+        flex-shrink: 0;
+        margin: 0;
+      }
+
+      .win98-checkbox input[type="checkbox"]:focus {
+        outline: 1px dotted #000;
+        outline-offset: 1px;
+      }
+
+      .win98-checkbox input[type="checkbox"]:checked::after {
+        content: "✓";
+        position: absolute;
+        top: -2px;
+        left: 1px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #000;
+        line-height: 1;
+      }
+
+      .win98-checkbox input[type="checkbox"]:disabled {
+        background: #c0c0c0;
+      }
+
+      .win98-checkbox input[type="checkbox"]:disabled::after {
+        color: #808080;
+      }
+
+      .win98-checkbox label {
+        font-size: 11px;
+        cursor: default;
+      }
+
+      .win98-checkbox label.disabled {
+        color: #808080;
       }
 
       /* -- Status bar -- */
@@ -237,6 +299,7 @@
         font-family: inherit;
         font-size: 11px;
         font-weight: bold;
+        color: #000;
         cursor: default;
       }
 
@@ -387,6 +450,10 @@
           gap: 6px;
         }
 
+        .win98-checkbox label {
+          font-size: 13px;
+        }
+
         .win98-taskbar {
           height: 36px;
         }
@@ -500,6 +567,10 @@
             say hello.
           </p>
           <div class="agent-select-group" id="agent-buttons"></div>
+          <div class="win98-checkbox">
+            <input type="checkbox" id="tts-toggle" checked />
+            <label for="tts-toggle">Enable text-to-speech</label>
+          </div>
         </div>
         <div class="win98-statusbar">
           <span class="statusbar-section" id="status-text">Ready</span>
@@ -576,6 +647,7 @@
         "Glad to meet you.",
         "At your service!",
         "Helloo!",
+        "Welcome!\nI'm here to help you\nwith anything you need.",
       ];
 
       let currentAgent = null;
@@ -584,6 +656,15 @@
       const statusText = document.getElementById("status-text");
       const agentCount = document.getElementById("agent-count");
       const btnContainer = document.getElementById("agent-buttons");
+      const ttsToggle = document.getElementById("tts-toggle");
+      const ttsLabel = document.querySelector('label[for="tts-toggle"]');
+      const ttsSupported = "speechSynthesis" in window;
+      if (!ttsSupported) {
+        ttsToggle.checked = false;
+        ttsToggle.disabled = true;
+        ttsLabel.classList.add("disabled");
+        ttsLabel.textContent = "Text-to-speech (not supported)";
+      }
 
       // Build agent buttons
       const buttons = new Map();
@@ -596,12 +677,22 @@
         buttons.set(name, btn);
       }
 
-      // Load a random agent on start
-      const randomName = availableAgents[~~(Math.random() * availableAgents.length)];
-      loadAgent(randomName, buttons.get(randomName));
+      // Load agent from URL hash or pick a random one
+      const hashAgent = location.hash.slice(1);
+      const randomAgent = availableAgents[~~(Math.random() * availableAgents.length)];
+      const initialAgent = !hashAgent
+        ? randomAgent
+        : availableAgents.includes(hashAgent)
+          ? hashAgent
+          : randomAgent;
+      const isRandom = !hashAgent;
+      loadAgent(initialAgent, buttons.get(initialAgent), { updateHash: !isRandom });
 
-      async function loadAgent(name, btn) {
+      async function loadAgent(name, btn, { updateHash = true } = {}) {
         if (activeBtn === btn) return;
+
+        // Persist selection in URL
+        if (updateHash) history.replaceState(null, "", "#" + name);
 
         // Remove previous agent
         if (currentAgent) {
@@ -633,7 +724,9 @@
         agent.show();
 
         const speak = () => {
-          agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)]);
+          agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)], {
+            tts: ttsToggle.checked,
+          });
           agent.animate();
         };
         agent._el.addEventListener("click", () => speak());

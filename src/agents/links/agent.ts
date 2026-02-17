@@ -24,6 +24,7 @@ export default {
     "21",
   ],
   framesize: [124, 93],
+  tts: { rate: 1.0, pitch: 1.5, voice: "Google US English" },
   animations: {
     IdleTailWagA: {
       frames: [
