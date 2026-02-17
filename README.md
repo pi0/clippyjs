@@ -114,13 +114,9 @@ clippy.load(
 );
 ```
 
-# Licence
+# LICENCE
 
-MIT
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpi0%2Fclippyjs?ref=badge_large)
-
-## Special Thanks
+[MIT](./LICENCE)
 
 - The [Clippy.JS](http://smore.com/clippy-js) project by [Smore](http://smore.com)
 - The awesome [Cinnamon Software](http://www.cinnamonsoftware.com/) for developing [Double Agent](http://doubleagent.sourceforge.net/)

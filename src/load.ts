@@ -43,13 +43,11 @@ function _loadSounds(name, path) {
 
   dfd = _sounds[name] = new Promise((resolve, reject) => {
     let audio = document.createElement("audio");
-    let canPlayMp3 = !!audio.canPlayType && "" !== audio.canPlayType("audio/mpeg");
-    let canPlayOgg = !!audio.canPlayType && "" !== audio.canPlayType('audio/ogg; codecs="vorbis"');
-
-    if (!canPlayMp3 && !canPlayOgg) {
+    let canPlayMp3 = !!audio.canPlayType && "" !== audio.canPlayType("audio/mp3");
+    if (!canPlayMp3) {
       resolve({});
     } else {
-      let src = path + (canPlayMp3 ? "/sounds-mp3.js" : "/sounds-ogg.js");
+      let src = path + "/sounds-mp3.js";
       _soundsCallbacks[name] = { resolve, reject };
       _loadScript(src);
     }

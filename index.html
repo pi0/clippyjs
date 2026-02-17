@@ -1,52 +1,394 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clippy.js — Windows 98</title>
     <link rel="stylesheet" type="text/css" href="./assets/clippy.css" media="all" />
     <style>
-      html {
-        background: url("http://wallpapercave.com/wp/7VNksl0.jpg") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Geneva, sans-serif;
+        font-size: 11px;
+      }
+
+      /* -- Win98 Desktop -- */
+      .win98-desktop {
+        width: 100%;
+        height: 100%;
+        background: #008080;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* -- Desktop area -- */
+      .desktop-area {
+        flex: 1;
+        padding: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: flex-start;
+        gap: 8px;
+      }
+
+      /* -- Desktop icons -- */
+      .desktop-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 72px;
+        padding: 4px;
+        cursor: default;
+        user-select: none;
+        text-align: center;
+      }
+
+      .desktop-icon:focus,
+      .desktop-icon:active {
+        outline: 1px dotted #fff;
+      }
+
+      .desktop-icon:active .icon-label {
+        background: #000080;
+        color: #fff;
+      }
+
+      .icon-img {
+        width: 32px;
+        height: 32px;
+        image-rendering: pixelated;
+        margin-bottom: 2px;
+      }
+
+      .icon-label {
+        color: #fff;
+        text-shadow: 1px 1px 1px #000;
+        padding: 1px 2px;
+        line-height: 1.3;
+        word-break: break-word;
+      }
+
+      /* -- Win98 Window -- */
+      .win98-window {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 420px;
+        background: #c0c0c0;
+        border-top: 2px solid #fff;
+        border-left: 2px solid #fff;
+        border-right: 2px solid #404040;
+        border-bottom: 2px solid #404040;
+        box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #808080;
+      }
+
+      .win98-titlebar {
+        background: linear-gradient(90deg, #000080, #1084d0);
+        color: #fff;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 3px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        user-select: none;
+      }
+
+      .titlebar-text {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .titlebar-buttons {
+        display: flex;
+        gap: 2px;
+      }
+
+      .titlebar-btn {
+        width: 16px;
+        height: 14px;
+        background: #c0c0c0;
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #404040;
+        border-bottom: 1px solid #404040;
+        font-size: 9px;
+        line-height: 12px;
+        text-align: center;
+        cursor: default;
+        color: #000;
+        font-family: "Marlett", sans-serif;
+      }
+
+      .titlebar-btn:active {
+        border-top: 1px solid #404040;
+        border-left: 1px solid #404040;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+      }
+
+      .win98-body {
+        padding: 12px;
+      }
+
+      .win98-body p {
+        font-size: 11px;
+        line-height: 1.5;
+        color: #000;
+      }
+
+      .win98-body h2 {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      /* Agent select */
+      .agent-select-group {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+
+      .agent-btn {
+        background: #c0c0c0;
+        border-top: 2px solid #fff;
+        border-left: 2px solid #fff;
+        border-right: 2px solid #404040;
+        border-bottom: 2px solid #404040;
+        padding: 3px 10px;
+        font-family: inherit;
+        font-size: 11px;
+        cursor: default;
+      }
+
+      .agent-btn:active,
+      .agent-btn.active {
+        border-top: 2px solid #404040;
+        border-left: 2px solid #404040;
+        border-right: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+        padding: 4px 9px 2px 11px;
+      }
+
+      .agent-btn:focus {
+        outline: 1px dotted #000;
+        outline-offset: -4px;
+      }
+
+      /* -- Status bar -- */
+      .win98-statusbar {
+        border-top: 1px solid #808080;
+        padding: 2px 6px;
+        font-size: 11px;
+        color: #000;
+        display: flex;
+        gap: 8px;
+      }
+
+      .statusbar-section {
+        border-top: 1px solid #fff;
+        border-left: 1px solid #808080;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #808080;
+        padding: 1px 4px;
+        flex: 1;
+      }
+
+      /* -- Taskbar -- */
+      .win98-taskbar {
+        height: 30px;
+        background: #c0c0c0;
+        border-top: 2px solid #fff;
+        display: flex;
+        align-items: center;
+        padding: 2px 4px;
+        gap: 4px;
+        z-index: 9999;
+      }
+
+      .start-btn {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        height: 22px;
+        padding: 0 6px;
+        background: #c0c0c0;
+        border-top: 2px solid #fff;
+        border-left: 2px solid #fff;
+        border-right: 2px solid #404040;
+        border-bottom: 2px solid #404040;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: default;
+      }
+
+      .start-btn:active {
+        border-top: 2px solid #404040;
+        border-left: 2px solid #404040;
+        border-right: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+      }
+
+      .start-logo {
+        width: 14px;
+        height: 14px;
+      }
+
+      .taskbar-tray {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 22px;
+        padding: 0 8px;
+        border-top: 1px solid #808080;
+        border-left: 1px solid #808080;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        font-size: 11px;
+      }
+
+      /* Win98 4-color flag as inline SVG */
+      .win98-flag {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
       }
     </style>
   </head>
-  <body style="width: 100%; height: 100vh">
+  <body>
+    <div class="win98-desktop">
+      <!-- Desktop icons -->
+      <div class="desktop-area">
+        <div class="desktop-icon" tabindex="0">
+          <svg class="icon-img" viewBox="0 0 32 32">
+            <rect x="4" y="2" width="24" height="28" fill="#fff" stroke="#000" stroke-width="1"/>
+            <rect x="4" y="2" width="24" height="6" fill="#000080"/>
+            <text x="16" y="7" text-anchor="middle" fill="#fff" font-size="5" font-weight="bold">README</text>
+            <line x1="8" y1="13" x2="24" y2="13" stroke="#000" stroke-width="0.5"/>
+            <line x1="8" y1="16" x2="24" y2="16" stroke="#000" stroke-width="0.5"/>
+            <line x1="8" y1="19" x2="20" y2="19" stroke="#000" stroke-width="0.5"/>
+            <line x1="8" y1="22" x2="22" y2="22" stroke="#000" stroke-width="0.5"/>
+          </svg>
+          <span class="icon-label">README.txt</span>
+        </div>
+        <div class="desktop-icon" tabindex="0">
+          <svg class="icon-img" viewBox="0 0 32 32">
+            <rect x="2" y="6" width="28" height="22" rx="1" fill="#c0c000" stroke="#808000" stroke-width="1"/>
+            <rect x="2" y="2" width="14" height="6" rx="1" fill="#c0c000" stroke="#808000" stroke-width="1"/>
+            <rect x="4" y="10" width="24" height="16" fill="#ffff80" stroke="#808000" stroke-width="0.5"/>
+          </svg>
+          <span class="icon-label">My Agents</span>
+        </div>
+        <div class="desktop-icon" tabindex="0">
+          <svg class="icon-img" viewBox="0 0 32 32">
+            <rect x="2" y="4" width="28" height="24" rx="2" fill="#c0c0c0" stroke="#808080" stroke-width="1"/>
+            <rect x="4" y="6" width="24" height="16" fill="#008080"/>
+            <circle cx="16" cy="14" r="5" fill="#fff" opacity="0.3"/>
+            <rect x="8" y="24" width="16" height="2" rx="1" fill="#808080"/>
+          </svg>
+          <span class="icon-label">My Computer</span>
+        </div>
+      </div>
+
+      <!-- Win98 Window -->
+      <div class="win98-window">
+        <div class="win98-titlebar">
+          <span class="titlebar-text">
+            <svg width="14" height="14" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#ffcc00" stroke="#806600" stroke-width="1"/><circle cx="6" cy="6" r="1.5" fill="#000"/><circle cx="10" cy="6" r="1.5" fill="#000"/><path d="M5 10 Q8 13 11 10" fill="none" stroke="#000" stroke-width="1"/></svg>
+            Clippy.js — Agent Loader
+          </span>
+          <div class="titlebar-buttons">
+            <button class="titlebar-btn">_</button>
+            <button class="titlebar-btn">□</button>
+            <button class="titlebar-btn">×</button>
+          </div>
+        </div>
+        <div class="win98-body">
+          <h2>Welcome to Clippy.js!</h2>
+          <p>Click an agent below to summon your desktop assistant.<br>They will wander around and say hello.</p>
+          <div class="agent-select-group" id="agent-buttons"></div>
+        </div>
+        <div class="win98-statusbar">
+          <span class="statusbar-section" id="status-text">Ready</span>
+          <span class="statusbar-section" style="flex: 0; white-space: nowrap;" id="agent-count">0 agents</span>
+        </div>
+      </div>
+
+      <!-- Taskbar -->
+      <div class="win98-taskbar">
+        <button class="start-btn">
+          <svg class="start-logo" viewBox="0 0 16 16">
+            <rect x="1" y="1" width="6" height="6" fill="#f00"/>
+            <rect x="9" y="1" width="6" height="6" fill="#0f0"/>
+            <rect x="1" y="9" width="6" height="6" fill="#00f"/>
+            <rect x="9" y="9" width="6" height="6" fill="#ff0"/>
+          </svg>
+          Start
+        </button>
+        <div class="taskbar-tray">
+          <span id="clock"></span>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import { clippy } from "./src/index.ts";
 
       window.CLIPPY_CDN = "/assets/agents/";
 
-      var availableAgents = [
-        "Bonzi",
-        "Clippy",
-        "F1",
-        "Genie",
-        "Genius",
-        "Links",
-        "Merlin",
-        "Peedy",
-        "Rocky",
-        "Rover",
+      const availableAgents = [
+        "Bonzi", "Clippy", "F1", "Genie", "Genius",
+        "Links", "Merlin", "Peedy", "Rocky", "Rover",
       ];
 
-      var talks = [
-        "How can i help you?",
+      const talks = [
+        "How can I help you?",
         "Nice day!",
         "Glad to meet you.",
-        "At your service",
-        "Helloo",
+        "At your service!",
+        "Helloo!",
       ];
 
       const randPos = () => 0.2 + Math.random() * 0.6;
+      const loadedAgents = new Map();
+      const statusText = document.getElementById("status-text");
+      const agentCount = document.getElementById("agent-count");
+      const btnContainer = document.getElementById("agent-buttons");
 
-      function nextAgent() {
-        let agentName = availableAgents.pop();
-        if (!agentName) return;
+      // Build agent buttons
+      for (const name of availableAgents) {
+        const btn = document.createElement("button");
+        btn.className = "agent-btn";
+        btn.textContent = name;
+        btn.addEventListener("click", () => loadAgent(name, btn));
+        btnContainer.appendChild(btn);
+      }
 
-        clippy.load(agentName, (agent) => {
-          window[agentName] = agent;
+      function loadAgent(name, btn) {
+        if (loadedAgents.has(name)) return;
+        btn.classList.add("active");
+        btn.disabled = true;
+        statusText.textContent = "Loading " + name + "...";
+
+        clippy.load(name, (agent) => {
+          loadedAgents.set(name, agent);
+          agentCount.textContent = loadedAgents.size + " agent" + (loadedAgents.size === 1 ? "" : "s");
+          statusText.textContent = name + " loaded!";
 
           const move = () => {
             agent.moveTo(
@@ -56,38 +398,28 @@
           };
 
           move();
-
           agent.show();
 
-          // Speak on click and start
           const speak = () => {
-            agent.speak("I am " + agentName + ", " + talks[~~(Math.random() * talks.length)]);
+            agent.speak("I am " + name + ". " + talks[~~(Math.random() * talks.length)]);
             agent.animate();
           };
           agent._el.addEventListener("click", () => speak());
           speak();
 
-          // Animate randomly
-          setInterval(
-            () => {
-              agent.animate();
-            },
-            3000 + Math.random() * 4000,
-          );
-
-          // Move randomly
-          setInterval(
-            () => {
-              move();
-            },
-            3000 + Math.random() * 4000,
-          );
-
-          setTimeout(nextAgent, 2000);
+          setInterval(() => agent.animate(), 3000 + Math.random() * 4000);
+          setInterval(() => move(), 3000 + Math.random() * 4000);
         });
       }
 
-      nextAgent();
+      // Taskbar clock
+      function updateClock() {
+        const now = new Date();
+        document.getElementById("clock").textContent =
+          now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      }
+      updateClock();
+      setInterval(updateClock, 30000);
     </script>
   </body>
 </html>
